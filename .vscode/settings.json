@@ -1,3 +1,13 @@
 {
-	"cSpell.words": ["oids", "pkey", "plpgsql", "sess"]
+  "cSpell.words": ["oids", "pkey", "plpgsql", "sess"],
+
+  "files.associations": {
+    "*.ejs": "html"
+  },
+  "emmet.includeLanguages": {
+    "ejs": "html"
+  },
+  "[ejs]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

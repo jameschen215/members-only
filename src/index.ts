@@ -5,14 +5,27 @@ import connectPgSimple from 'connect-pg-simple';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import expressEjsLayouts from 'express-ejs-layouts';
 
 import { pool } from './db/pool.js';
 import { runSetup } from './db/setup.js';
 import { configurePassport } from './auth/passport.js';
+import { router as indexRoutes } from './routes/index.js';
 import { router as authRoutes } from './routes/auth.js';
 
 const app = express();
 const pgSession = connectPgSimple(session);
+
+// Configure ejs
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(expressEjsLayouts);
+app.set('layout', 'layout');
 
 // Middlewares
 app.use(cors());
@@ -45,7 +58,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-app.get('/', (_req, res) => res.send(`<h1>Hey there, members!</h1>`));
+app.get('/', indexRoutes);
 
 app.use('/auth', authRoutes);
 
