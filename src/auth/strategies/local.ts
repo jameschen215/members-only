@@ -1,27 +1,31 @@
-import bcrypt from "bcrypt";
-import { Strategy as LocalStrategy } from "passport-local";
-import { getUserByUsername } from "../../models/user.js";
+import bcrypt from 'bcrypt';
+import { Strategy as LocalStrategy } from 'passport-local';
+import { getUserByUsername } from '../../models/user.js';
 
 export const localStrategy = new LocalStrategy(
   {
-    usernameField: "email",
-    passwordField: "password",
+    usernameField: 'username',
+    passwordField: 'password',
   },
   async (username: string, password: string, done) => {
+    console.log('Start to login...');
+
     try {
       const user = await getUserByUsername(username);
 
       if (!user) {
-        return done(null, false, { message: "No user found with the email" });
+        return done(null, false, { message: 'No user found with the email' });
       }
+
+      console.log('Get user from database: ', user);
 
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
-        return done(null, false, { message: "Incorrect password" });
+        return done(null, false, { message: 'Incorrect password' });
       }
 
-      done(null, user);
+      return done(null, user);
     } catch (error) {
       done(error);
     }

@@ -1,26 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<link rel="stylesheet" href="/styles/build.css" />
+    <link rel="stylesheet" href="/styles/build.css" />
 
-		<title>Members Only</title>
-	</head>
+    <title>Members Only</title>
+  </head>
 
-	<body>
-		<nav>
-			<ul>
-				<li>
-					<a href="/">Home</a>
-					<a href="/auth/register">Register</a>
-					<a href="/auth/login">Login</a>
-				</li>
-			</ul>
-		</nav>
+  <body>
+    <nav>
+      <ul>
+        <li>
+          <a href="/">Home</a>
+        </li>
+        <li>
+          <a href="/auth/register">Register</a>
+        </li>
+        <% if (locals.currentUser) { %>
+        <li>
+          <a href="/auth/profile">Profile</a>
+        </li>
+        <% } else { %>
+        <li>
+          <a href="/auth/login">Login</a>
+        </li>
+        <% } %>
+      </ul>
+    </nav>
 
-		<!-- Main -->
-		<main><%- body %></main>
-	</body>
+    <!-- Main -->
+    <main><%- body %></main>
+  </body>
 </html>

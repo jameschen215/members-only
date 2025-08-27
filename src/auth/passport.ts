@@ -1,8 +1,8 @@
-import passport from "passport";
+import passport from 'passport';
 
-import { UserType } from "../types/user.js";
-import { getUserById } from "../models/user.js";
-import { localStrategy } from "./strategies/local.js";
+import { UserType } from '../types/user.js';
+import { getUserById } from '../models/user.js';
+import { localStrategy } from './strategies/local.js';
 
 export function configurePassport() {
   // Configure strategy

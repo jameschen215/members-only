@@ -1,3 +1,40 @@
 <div>
-	<h1>Login Form</h1>
+  <form action="/auth/login" method="post" class="space-y-4">
+    <div>
+      <label for="username" class="capitalize">username</label>
+      <input
+        type="email"
+        id="username"
+        name="username"
+        class="border border-zinc-200 rounded-sm"
+      />
+
+      <% if (locals.errors?.username) { %>
+      <p class="text-red-500 text-sm"><%= errors.username.msg %></p>
+      <% } %>
+    </div>
+
+    <div>
+      <label for="password" class="capitalize">password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="border border-zinc-200 rounded-sm"
+      />
+
+      <% if (locals.errors?.password) { %>
+      <p class="text-red-500 text-sm"><%= errors.password.msg %></p>
+      <% } %>
+    </div>
+
+    <% if (locals.errors?.auth) { %>
+    <p class="text-red-500 text-sm"><%= errors.auth.msg %></p>
+    <% } %>
+
+    <div>
+      <button type="button">Cancel</button>
+      <button type="submit">Login</button>
+    </div>
+  </form>
 </div>

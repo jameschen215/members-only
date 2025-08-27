@@ -1,33 +1,78 @@
 <div>
-	<form action="/auth/register" method="post">
-		<div>
-			<label for="first_name">first name</label>
-			<input type="text" id="first_name" name="first_name" />
-		</div>
+  <form action="/auth/register" method="post" class="space-y-4">
+    <div class="">
+      <label for="first_name" class="capitalize">first name</label>
+      <input
+        type="text"
+        id="first_name"
+        name="first_name"
+        class="border border-zinc-200 rounded-sm"
+      />
 
-		<div>
-			<label for="last_name">last name</label>
-			<input type="text" id="last_name" name="last_name" />
-		</div>
+      <% if (locals.errors?.first_name) { %>
+      <p class="text-red-500 text-sm"><%= errors.first_name.msg %></p>
+      <% } %>
+    </div>
 
-		<div>
-			<label for="username">username</label>
-			<input type="email" id="username" name="username" />
-		</div>
+    <div>
+      <label for="last_name" class="capitalize">last name</label>
+      <input
+        type="text"
+        id="last_name"
+        name="last_name"
+        class="border border-zinc-200 rounded-sm"
+      />
 
-		<div>
-			<label for="password">password</label>
-			<input type="password" id="password" name="password" />
-		</div>
+      <% if (locals.errors?.last_name) { %>
+      <p class="text-red-500 text-sm"><%= errors.last_name.msg %></p>
+      <% } %>
+    </div>
 
-		<div>
-			<label for="confirm_password">confirm password</label>
-			<input type="password" id="confirm_password" name="confirm_password" />
-		</div>
+    <div>
+      <label for="username" class="capitalize">username</label>
+      <input
+        type="email"
+        id="username"
+        name="username"
+        class="border border-zinc-200 rounded-sm"
+      />
 
-		<div>
-			<button type="button">Cancel</button>
-			<button type="submit">Register</button>
-		</div>
-	</form>
+      <% if (locals.errors?.username) { %>
+      <p class="text-red-500 text-sm"><%= errors.username.msg %></p>
+      <% } %>
+    </div>
+
+    <div>
+      <label for="password" class="capitalize">password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="border border-zinc-200 rounded-sm"
+      />
+
+      <% if (locals.errors?.password) { %>
+      <p class="text-red-500 text-sm"><%= errors.password.msg %></p>
+      <% } %>
+    </div>
+
+    <div>
+      <label for="confirm_password" class="capitalize">confirm password</label>
+      <input
+        type="password"
+        id="confirm_password"
+        name="confirm_password"
+        class="border border-zinc-200 rounded-sm"
+      />
+
+      <% if (locals.errors?.confirm_password) { %>
+      <p class="text-red-500 text-sm"><%= errors.confirm_password.msg %></p>
+      <% } %>
+    </div>
+
+    <div>
+      <button type="button">Cancel</button>
+      <button type="submit">Register</button>
+    </div>
+  </form>
 </div>

@@ -1,3 +1,9 @@
-<div>
-	<h1 class="text-blue-500 text-5xl">Hello, Members</h1>
+<div class="">
+  <% if (locals.currentUser) { %>
+  <h1 class="text-blue-500 text-5xl">
+    Hello, <%= currentUser.first_name %> <%= currentUser.last_name %>
+  </h1>
+  <% } else { %>
+  <h1 class="text-blue-500 text-5xl">Hello, members!</h1>
+  <% } %>
 </div>
