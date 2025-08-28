@@ -14,7 +14,9 @@ export const localStrategy = new LocalStrategy(
       const user = await getUserByUsername(username);
 
       if (!user) {
-        return done(null, false, { message: 'No user found with the email' });
+        return done(null, false, {
+          message: 'No user found with this username',
+        });
       }
 
       console.log('Get user from database: ', user);

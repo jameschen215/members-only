@@ -10,27 +10,49 @@
   </head>
 
   <body>
-    <nav>
-      <ul>
-        <li>
-          <a href="/">Home</a>
-        </li>
-        <li>
-          <a href="/auth/register">Register</a>
-        </li>
-        <% if (locals.currentUser) { %>
-        <li>
-          <a href="/auth/profile">Profile</a>
-        </li>
-        <% } else { %>
-        <li>
-          <a href="/auth/login">Login</a>
-        </li>
-        <% } %>
-      </ul>
+    <nav
+      class="fixed top-0 left-0 h-14 px-5 w-full bg-white/30 border-b border-zinc-100 backdrop-blur z-10"
+    >
+      <!-- 1280 container -->
+      <div
+        class="max-w-[1440px] h-full mx-auto flex items-center justify-between"
+      >
+        <!-- Brand -->
+        <div class="font-semibold">
+          <a href="/" class="" aria-label="Members Only - Home">
+            <div class="sm:hidden"><span>M</span><span>O</span></div>
+            <div class="hidden sm:block">Members Only</div>
+          </a>
+        </div>
+
+        <!-- Navigation Links -->
+        <ul class="h-full flex items-center gap-5">
+          <li>
+            <a href="/">Home</a>
+          </li>
+          <% if (locals.currentUser) { %>
+          <li>
+            <a href="/auth/profile">Profile</a>
+          </li>
+          <li>
+            <a href="/messages/create">Post</a>
+          </li>
+          <% } else { %>
+          <li>
+            <a href="/auth/login">Login</a>
+          </li>
+          <li>
+            <a href="/auth/regitster">Register</a>
+          </li>
+          <% } %>
+        </ul>
+      </div>
     </nav>
 
     <!-- Main -->
-    <main><%- body %></main>
+    <main class="mt-14 px-5">
+      <!-- 1280 container -->
+      <div class="max-w-[1440px] mx-auto"><%- body %></div>
+    </main>
   </body>
 </html>

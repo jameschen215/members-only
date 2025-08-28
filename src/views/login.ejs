@@ -1,40 +1,77 @@
-<div>
-  <form action="/auth/login" method="post" class="space-y-4">
-    <div>
-      <label for="username" class="capitalize">username</label>
+<% const hasUsernameError = locals.errors?.username || (locals.errors?.auth && errors.auth.msg.includes('email')) %>
+<% const hasPasswordError = locals.errors?.password || (locals.errors?.auth && errors.auth.msg.includes('password')) %>
+
+<div class="min-h-[calc(100vh-56px)] pt-14">
+  <div class="mb-8">
+    <h1 class="text-3xl text-center">Sign in to your account</h1>
+  </div>
+
+  <form
+    id="login-form"
+    action="/auth/login"
+    method="post"
+    class="space-y-5"
+    novalidate
+    data-errors="<%= JSON.stringify(locals.errors) || {} %>"
+  >
+    <div class="flex flex-col">
+      <label
+        for="username"
+        class="capitalize text-sm font-medium text-zinc-700 mb-2"
+      >
+        username
+      </label>
       <input
         type="email"
         id="username"
         name="username"
-        class="border border-zinc-200 rounded-sm"
+        value="<%= locals.originalInput?.username || '' %>"
+        aria-describedby="<% hasUsernameError ? 'username-error' : 'username-help' %>"
+        aria-required="true"
+        required
+        class="border border-zinc-200 rounded-sm px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-50 transition-colors duration-200"
       />
 
-      <% if (locals.errors?.username) { %>
-      <p class="text-red-500 text-sm"><%= errors.username.msg %></p>
-      <% } %>
+      <p id="username-help" class="text-sm text-zinc-600 mt-2">
+        Please input an valid email address for username
+      </p>
     </div>
 
-    <div>
-      <label for="password" class="capitalize">password</label>
+    <div class="flex flex-col">
+      <label
+        for="password"
+        class="capitalize text-sm font-medium text-zinc-700 mb-2"
+      >
+        password
+      </label>
       <input
         type="password"
         id="password"
         name="password"
-        class="border border-zinc-200 rounded-sm"
+        value="<%= locals.originalInput?.password || '' %>"
+        aria-describedby="<% hasPasswordError ? 'password-error' : '' %>"
+        aria-required="true"
+        required
+        class="border border-zinc-200 rounded-sm px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-50 transition-colors duration-200"
       />
-
-      <% if (locals.errors?.password) { %>
-      <p class="text-red-500 text-sm"><%= errors.password.msg %></p>
-      <% } %>
     </div>
 
-    <% if (locals.errors?.auth) { %>
-    <p class="text-red-500 text-sm"><%= errors.auth.msg %></p>
-    <% } %>
+    <div>
+      <button
+        type="submit"
+        class="w-full bg-sky-500 py-2 outline-none text-white font-semibold rounded-sm cursor-pointer transition-colors duration-200 hover:bg-sky-400 focus:ring-2 focus:ring-offset-1 focus:ring-sky-400 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Login
+      </button>
+    </div>
 
     <div>
-      <button type="button">Cancel</button>
-      <button type="submit">Login</button>
+      <p class="text-center text-sm">
+        Don’t have an account yet?
+        <a href="/auth/register" class="underline"> Sign up</a> now.
+      </p>
     </div>
   </form>
 </div>
+
+<script src="/scripts/login.js"></script>

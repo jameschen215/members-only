@@ -9,11 +9,11 @@ import { createUser } from '../models/user.js';
 import { PublicUserType } from '../types/user.js';
 
 export const getRegisterForm: RequestHandler = (req, res) => {
-  res.render('register', { errors: null, data: null });
+  res.render('register', { errors: null, originalInput: null });
 };
 
 export const getLoginForm: RequestHandler = (req, res) => {
-  res.render('login', { errors: null, data: null });
+  res.render('login', { errors: null, originalInput: null });
 };
 
 export const registerNewUser: RequestHandler = async (req, res, next) => {
