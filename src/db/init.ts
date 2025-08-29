@@ -2,17 +2,17 @@ import { Client } from 'pg';
 import { config as dbConfig } from './pool.js';
 
 export async function initializeDatabase() {
-	const client = new Client(dbConfig);
+  const client = new Client(dbConfig);
 
-	try {
-		// Connect to database
-		console.log('Connecting to database...');
-		await client.connect();
-		console.log('Connected successfully');
+  try {
+    // Connect to database
+    console.log('Connecting to database...');
+    await client.connect();
+    console.log('Connected successfully');
 
-		// Drop existing tables and enums if existing
-		console.log('Drop existing tables...');
-		await client.query(`
+    // Drop existing tables and enums if existing
+    console.log('Drop existing tables...');
+    await client.query(`
       DROP TABLE IF EXISTS
         messages,
         user_sessions,
@@ -22,32 +22,31 @@ export async function initializeDatabase() {
       DROP TYPE IF EXISTS user_role CASCADE;
     `);
 
-		// Create the enum type first, separately
-		console.log('Creating enum type for user roles...');
-		await client.query(`
+    // Create the enum type first, separately
+    console.log('Creating enum type for user roles...');
+    await client.query(`
       CREATE TYPE user_role AS ENUM ('user', 'moderator', 'admin');
     `);
 
-		//  Create table users
-		console.log('Creating tables...');
-		console.log('Creating users table...');
-		await client.query(`
+    //  Create table users
+    console.log('Creating tables...');
+    console.log('Creating users table...');
+    await client.query(`
       CREATE TABLE users (
         id integer primary key generated always as identity,
-        first_name varchar(255) not null,
-        last_name varchar(255) not null,
+        first_name varchar(25) not null,
+        last_name varchar(25) not null,
         username varchar(255) unique not null,
         password varchar(255) not null,
         role user_role not null default 'user',
-        is_admin boolean not null default false,
         created_at timestamp with time zone default current_timestamp,
         updated_at timestamp with time zone default current_timestamp
       );
     `);
 
-		// Create sessions table
-		console.log('Creating user sessions table...');
-		await client.query(`
+    // Create sessions table
+    console.log('Creating user sessions table...');
+    await client.query(`
       CREATE TABLE user_sessions (
         sid varchar not null,
         sess json not null,
@@ -56,8 +55,8 @@ export async function initializeDatabase() {
       WITH (oids=false);
     `);
 
-		// Add constraints and indexes
-		await client.query(`
+    // Add constraints and indexes
+    await client.query(`
       ALTER TABLE user_sessions ADD CONSTRAINT session_pkey 
         PRIMARY KEY (sid) NOT DEFERRABLE INITIALLY IMMEDIATE;
 
@@ -65,34 +64,35 @@ export async function initializeDatabase() {
       CREATE INDEX idx_users_username ON users (username);
       CREATE INDEX idx_users_first_name ON users (first_name);
       CREATE INDEX idx_users_role ON users (role);
-      CREATE INDEX idx_users_is_admin ON users (is_admin);
     `);
 
-		// Function to automatically set is_admin based on role
-		console.log('Creating trigger function...');
-		await client.query(`
-      CREATE OR REPLACE FUNCTION update_is_admin()
+    // Function to automatically set admin based on username
+    console.log('Creating trigger function...');
+    await client.query(`
+      CREATE OR REPLACE FUNCTION update_admin_role()
       RETURNS TRIGGER AS $$
       BEGIN
-        NEW.is_admin = (NEW.username IN ('jameschen215@outlook.com', 'admin@company.com'));
+        IF NEW.username IN ('jameschen215@outlook.com', 'admin@company.com') 
+        THEN NEW.role = 'admin';
+        END IF;
         NEW.updated_at = CURRENT_TIMESTAMP;
         RETURN NEW;
       END;
       $$ LANGUAGE plpgsql;
     `);
 
-		// Trigger to automatically update is_admin when role changes
-		console.log('Creating trigger...');
-		await client.query(`
-      CREATE TRIGGER trigger_update_is_admin
-        BEFORE INSERT OR UPDATE OF role ON users
+    // Trigger to automatically update role when when new user is created
+    console.log('Creating trigger...');
+    await client.query(`
+      CREATE TRIGGER trigger_update_admin_role
+        BEFORE INSERT OR UPDATE ON users
         FOR EACH ROW
-        EXECUTE FUNCTION update_is_admin();
+        EXECUTE FUNCTION update_admin_role();
     `);
 
-		// Create messages table
-		console.log('Creating messages table...');
-		await client.query(`
+    // Create messages table
+    console.log('Creating messages table...');
+    await client.query(`
       CREATE TABLE messages (
         id integer primary key generated always as identity,
         title varchar(255) not null,
@@ -104,26 +104,26 @@ export async function initializeDatabase() {
       );
     `);
 
-		// Create indexes for messages table
-		console.log('Creating indexes for messages table...');
-		await client.query(`
+    // Create indexes for messages table
+    console.log('Creating indexes for messages table...');
+    await client.query(`
       CREATE INDEX idx_messages_user_id ON messages (user_id);
       CREATE INDEX idx_messages_created_at ON messages (created_at);
     `);
 
-		console.log('Database initialization completed successfully');
-	} catch (error) {
-		const err = error as { message?: string; code?: string; detail?: string };
+    console.log('Database initialization completed successfully');
+  } catch (error) {
+    const err = error as { message?: string; code?: string; detail?: string };
 
-		console.error('Database initialization error details', {
-			message: err.message,
-			code: err.code,
-			detail: err.detail,
-		});
+    console.error('Database initialization error details', {
+      message: err.message,
+      code: err.code,
+      detail: err.detail,
+    });
 
-		throw error;
-	} finally {
-		await client.end();
-		console.log('Database connection closed');
-	}
+    throw error;
+  } finally {
+    await client.end();
+    console.log('Database connection closed');
+  }
 }

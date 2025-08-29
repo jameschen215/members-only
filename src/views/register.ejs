@@ -9,7 +9,7 @@
     method="post"
     class="space-y-4"
     novalidate
-    data-errors="<% JSON.stringify(locals.errors) || {} %>"
+    data-errors="<%= JSON.stringify(locals.errors) || {} %>"
   >
     <div class="flex flex-col">
       <label
@@ -22,7 +22,7 @@
         type="text"
         id="first_name"
         name="first_name"
-        value="<% locals.originalInput?.first_name || '' %>"
+        value="<%= locals.originalInput?.first_name || '' %>"
         aria-required="true"
         required
         class="border border-zinc-200 rounded-sm px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-50 transition-colors duration-200"
@@ -108,10 +108,6 @@
         required
         class="border border-zinc-200 rounded-sm px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-50 transition-colors duration-200"
       />
-
-      <% if (locals.errors?.confirm_password) { %>
-      <p class="text-red-500 text-sm"><%= errors.confirm_password.msg %></p>
-      <% } %>
     </div>
 
     <div>
@@ -124,3 +120,5 @@
     </div>
   </form>
 </div>
+
+<script type="module" src="/scripts/register.js"></script>
