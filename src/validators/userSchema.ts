@@ -10,8 +10,13 @@ export const registerSchema = checkSchema({
       errorMessage: 'First name is required',
     },
     isLength: {
-      options: { min: 2, max: 50 },
-      errorMessage: 'First name must be between 2 and 50 characters',
+      options: { min: 2, max: 25 },
+      errorMessage: 'Name must be between 2 and 25 characters',
+    },
+    matches: {
+      options: /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/,
+      errorMessage:
+        'Name can only contain letters, spaces, hyphens, or apostrophes.',
     },
   },
   last_name: {
@@ -22,8 +27,13 @@ export const registerSchema = checkSchema({
       errorMessage: 'Last name is required',
     },
     isLength: {
-      options: { min: 2, max: 50 },
-      errorMessage: 'Last name must be between 2 and 50 characters',
+      options: { min: 2, max: 25 },
+      errorMessage: 'Name must be between 2 and 25 characters',
+    },
+    matches: {
+      options: /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/,
+      errorMessage:
+        'Name can only contain letters, spaces, hyphens, or apostrophes.',
     },
   },
   username: {

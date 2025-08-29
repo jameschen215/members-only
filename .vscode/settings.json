@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["oids", "pkey", "plpgsql", "sess"],
+  "cSpell.words": ["describedby", "oids", "pkey", "plpgsql", "sess"],
 
   "files.associations": {
     "*.ejs": "html"

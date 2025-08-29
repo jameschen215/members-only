@@ -1,68 +1,112 @@
-<div>
-  <form action="/auth/register" method="post" class="space-y-4">
-    <div class="">
-      <label for="first_name" class="capitalize">first name</label>
+<div class="min-h[calc(100vh-56px)] py-12">
+  <div class="mb-8">
+    <h1 class="text-3xl text-center">Sign up for a new account</h1>
+  </div>
+
+  <form
+    id="register-form"
+    action="/auth/register"
+    method="post"
+    class="space-y-4"
+    novalidate
+    data-errors="<% JSON.stringify(locals.errors) || {} %>"
+  >
+    <div class="flex flex-col">
+      <label
+        for="first_name"
+        class="capitalize text-sm font-medium text-zinc-700 mb-2"
+      >
+        first name
+      </label>
       <input
         type="text"
         id="first_name"
         name="first_name"
-        class="border border-zinc-200 rounded-sm"
+        value="<% locals.originalInput?.first_name || '' %>"
+        aria-required="true"
+        required
+        class="border border-zinc-200 rounded-sm px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-50 transition-colors duration-200"
       />
-
-      <% if (locals.errors?.first_name) { %>
-      <p class="text-red-500 text-sm"><%= errors.first_name.msg %></p>
-      <% } %>
     </div>
 
-    <div>
-      <label for="last_name" class="capitalize">last name</label>
+    <div class="flex flex-col">
+      <label
+        for="last_name"
+        class="capitalize text-sm font-medium text-zinc-700 mb-2"
+      >
+        last name
+      </label>
       <input
         type="text"
         id="last_name"
         name="last_name"
-        class="border border-zinc-200 rounded-sm"
+        value="<%= locals.originalInput?.last_name || '' %>"
+        aria-required="true"
+        required
+        class="border border-zinc-200 rounded-sm px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-50 transition-colors duration-200"
       />
-
-      <% if (locals.errors?.last_name) { %>
-      <p class="text-red-500 text-sm"><%= errors.last_name.msg %></p>
-      <% } %>
     </div>
 
-    <div>
-      <label for="username" class="capitalize">username</label>
+    <div class="flex flex-col">
+      <label
+        for="username"
+        class="capitalize text-sm font-medium text-zinc-700 mb-2"
+        >username</label
+      >
       <input
         type="email"
         id="username"
         name="username"
-        class="border border-zinc-200 rounded-sm"
+        value="<%= locals.originalInput?.username || '' %>"
+        aria-describedby="username-help"
+        aria-required="true"
+        required
+        class="border border-zinc-200 rounded-sm px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-50 transition-colors duration-200"
       />
 
-      <% if (locals.errors?.username) { %>
-      <p class="text-red-500 text-sm"><%= errors.username.msg %></p>
-      <% } %>
+      <p id="username-help" class="text-sm text-zinc-500 mt-2">
+        Please input an valid email address for username
+      </p>
     </div>
 
-    <div>
-      <label for="password" class="capitalize">password</label>
+    <div class="flex flex-col">
+      <label
+        for="password"
+        class="capitalize text-sm font-medium text-zinc-700 mb-2"
+      >
+        password
+      </label>
       <input
         type="password"
         id="password"
         name="password"
-        class="border border-zinc-200 rounded-sm"
+        value="<%= locals.originalInput?.password || ''%>"
+        aria-describedby="password-help"
+        aria-required="true"
+        required
+        class="border border-zinc-200 rounded-sm px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-50 transition-colors duration-200"
       />
 
-      <% if (locals.errors?.password) { %>
-      <p class="text-red-500 text-sm"><%= errors.password.msg %></p>
-      <% } %>
+      <p id="password-help" class="text-sm text-zinc-500 mt-2">
+        Password must be at least 6 characters long
+      </p>
     </div>
 
-    <div>
-      <label for="confirm_password" class="capitalize">confirm password</label>
+    <div class="flex flex-col">
+      <label
+        for="confirm_password"
+        class="capitalize text-sm font-medium text-zinc-700 mb-2"
+      >
+        confirm password
+      </label>
       <input
         type="password"
         id="confirm_password"
         name="confirm_password"
-        class="border border-zinc-200 rounded-sm"
+        value="<%= locals.originalInput?.confirm_password || '' %>"
+        aria-required="true"
+        required
+        class="border border-zinc-200 rounded-sm px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-50 transition-colors duration-200"
       />
 
       <% if (locals.errors?.confirm_password) { %>
@@ -71,8 +115,12 @@
     </div>
 
     <div>
-      <button type="button">Cancel</button>
-      <button type="submit">Register</button>
+      <button
+        type="submit"
+        class="w-full bg-sky-500 py-2 outline-none text-white font-semibold rounded-sm cursor-pointer transition-colors duration-200 hover:bg-sky-400 focus:ring-2 focus:ring-offset-1 focus:ring-sky-400 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        Register
+      </button>
     </div>
   </form>
 </div>
