@@ -1,16 +1,15 @@
 import { RequestHandler } from 'express';
 import { PublicUserType } from '../types/user.js';
+import { formatDate } from '../lib/utils.js';
 
 export const currentUser: RequestHandler = (req, res, next) => {
-  console.log('You are into currentUser middleware...');
-
   if (req.user) {
     // Actually remove the password
     const { password, ...userWithoutPassword } = req.user as any;
-    res.locals.currentUser = userWithoutPassword as PublicUserType;
-  }
 
-  console.log('You are about to leave currentUser middleware...');
+    res.locals.currentUser = userWithoutPassword as PublicUserType;
+    res.locals.formatDate = formatDate;
+  }
 
   next(); // always call next()
 };
