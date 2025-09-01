@@ -1,73 +1,75 @@
-<div class="min-h-[calc(100vh-56px)] py-12">
-  <div class="mb-8">
-    <h1 class="text-3xl text-center">Sign in to your account</h1>
+<div class="min-h-[calc(100vh-56px)] py-12 px-5">
+  <div class="w-full max-w-90 mx-auto">
+    <div class="mb-8">
+      <h1 class="text-3xl sm:text-5xl font-bold text-center">Sign in</h1>
+    </div>
+
+    <form
+      id="login-form"
+      action="/auth/login"
+      method="post"
+      class="space-y-5"
+      novalidate
+      data-errors="<%= JSON.stringify(locals.errors) || {} %>"
+    >
+      <div class="flex flex-col">
+        <label
+          for="username"
+          class="capitalize text-sm font-medium text-zinc-700 mb-2"
+        >
+          username
+        </label>
+        <input
+          type="email"
+          id="username"
+          name="username"
+          value="<%= locals.originalInput?.username || '' %>"
+          aria-describedby="username-help"
+          aria-required="true"
+          required
+          class="border border-zinc-200 rounded-sm px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-50 transition-colors duration-200"
+        />
+
+        <p id="username-help" class="text-sm text-zinc-500 mt-2">
+          Please input an valid email address for username
+        </p>
+      </div>
+
+      <div class="flex flex-col">
+        <label
+          for="password"
+          class="capitalize text-sm font-medium text-zinc-700 mb-2"
+        >
+          password
+        </label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value="<%= locals.originalInput?.password || '' %>"
+          aria-required="true"
+          required
+          class="border border-zinc-200 rounded-sm px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-50 transition-colors duration-200"
+        />
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          class="w-full bg-sky-500 py-2 outline-none text-white font-semibold rounded-sm cursor-pointer transition-colors duration-200 hover:bg-sky-400 focus:ring-2 focus:ring-offset-1 focus:ring-sky-400 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Login
+        </button>
+      </div>
+
+      <div>
+        <p class="text-center text-sm">
+          Don&#39;t have an account yet?
+          <a href="/auth/register" class="underline"> Sign up</a> now.
+        </p>
+      </div>
+    </form>
   </div>
-
-  <form
-    id="login-form"
-    action="/auth/login"
-    method="post"
-    class="space-y-5"
-    novalidate
-    data-errors="<%= JSON.stringify(locals.errors) || {} %>"
-  >
-    <div class="flex flex-col">
-      <label
-        for="username"
-        class="capitalize text-sm font-medium text-zinc-700 mb-2"
-      >
-        username
-      </label>
-      <input
-        type="email"
-        id="username"
-        name="username"
-        value="<%= locals.originalInput?.username || '' %>"
-        aria-describedby="username-help"
-        aria-required="true"
-        required
-        class="border border-zinc-200 rounded-sm px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-50 transition-colors duration-200"
-      />
-
-      <p id="username-help" class="text-sm text-zinc-500 mt-2">
-        Please input an valid email address for username
-      </p>
-    </div>
-
-    <div class="flex flex-col">
-      <label
-        for="password"
-        class="capitalize text-sm font-medium text-zinc-700 mb-2"
-      >
-        password
-      </label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        value="<%= locals.originalInput?.password || '' %>"
-        aria-required="true"
-        required
-        class="border border-zinc-200 rounded-sm px-3 py-2 outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-50 transition-colors duration-200"
-      />
-    </div>
-
-    <div>
-      <button
-        type="submit"
-        class="w-full bg-sky-500 py-2 outline-none text-white font-semibold rounded-sm cursor-pointer transition-colors duration-200 hover:bg-sky-400 focus:ring-2 focus:ring-offset-1 focus:ring-sky-400 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Login
-      </button>
-    </div>
-
-    <div>
-      <p class="text-center text-sm">
-        Don&#39;t have an account yet?
-        <a href="/auth/register" class="underline"> Sign up</a> now.
-      </p>
-    </div>
-  </form>
 </div>
 
 <script type="module" src="/scripts/login.js"></script>

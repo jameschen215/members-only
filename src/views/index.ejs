@@ -1,9 +1,22 @@
-<div class="">
+<div class="mt-14 py-8 min-h-[calc(100vh-56px)] border-x border-zinc-200">
+  <!-- header -->
+
   <% if (locals.currentUser) { %>
-  <h1 class="text-blue-500 text-5xl">
-    Hello, <%= currentUser.first_name %> <%= currentUser.last_name %>
-  </h1>
-  <% } else { %>
-  <h1 class="text-blue-500 text-5xl">Hello, members!</h1>
+  <div class="flex flex-col items-center gap-6">
+    <h1 class="text-zinc-800 text-3xl font-semibold text-center">
+      Hey <%= currentUser.first_name %>, what's up?
+    </h1>
+    <a
+      href="/messages/create"
+      class="bg-sky-500 py-2 px-8 outline-none text-white font-semibold rounded-sm cursor-pointer transition-colors duration-200 hover:bg-sky-400 focus:ring-2 focus:ring-offset-1 focus:ring-sky-400"
+    >
+      New Post
+    </a>
+  </div>
+
+  <hr class="text-zinc-200 my-8" />
   <% } %>
+
+  <!-- Posts -->
+  <div></div>
 </div>

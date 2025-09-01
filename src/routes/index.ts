@@ -1,12 +1,9 @@
 import { Router } from 'express';
-import { isAuthenticated } from '../auth/middleware.js';
+
+import { getLandingPage, getAllPosts } from '../controllers/index.js';
 
 export const router = Router();
 
-router.get('/', (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('/auth/login');
-  }
+router.get('/', getAllPosts);
 
-  res.render('index');
-});
+router.get('/landing-page', getLandingPage);

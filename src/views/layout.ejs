@@ -1,44 +1,3 @@
-<!-- Home icon -->
-<% const HOME_ICON = `
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  class="lucide lucide-house-icon lucide-house w-full h-full"
->
-  <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
-  <path
-    d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
-  />
-</svg>
-`; %>
-
-<!-- Profile icon -->
-<% const PROFILE_ICON = `
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  class="lucide lucide-user-icon lucide-user w-full h-full"
->
-  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-  <circle cx="12" cy="7" r="4" />
-</svg>
-`; %>
-
-<!--  -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -53,94 +12,13 @@
   </head>
 
   <body>
-    <nav
-      class="fixed top-0 left-1/2 -translate-x-1/2 h-14 px-5 w-full max-w-[600px] bg-white/50 border-b border-x border-zinc-200 backdrop-blur z-10"
-    >
-      <!-- 1280 container -->
-      <div
-        class="max-w-[1440px] h-full mx-auto flex items-center justify-between"
-      >
-        <!-- Brand -->
-        <div class="font-semibold">
-          <a href="/" class="" aria-label="Members Only - Home">
-            <div class="sm:hidden"><span>M</span><span>O</span></div>
-            <div class="hidden sm:block">Members Only</div>
-          </a>
-        </div>
-
-        <!-- Navigation Links -->
-        <ul class="h-full flex items-center gap-1 text-zinc-900">
-          <li>
-            <a
-              class="flex items-center gap-1 rounded-md hover:bg-zinc-100 p-2"
-              href="/"
-            >
-              <span class="block size-5.5" aria-hidden="true"
-                ><%- HOME_ICON %></span
-              >
-              <span class="sr-only sm:not-sr-only">Home</span>
-            </a>
-          </li>
-          <% if (locals.currentUser) { %>
-          <li>
-            <a
-              class="flex items-center gap-1 rounded-md hover:bg-zinc-100 p-2"
-              href="/auth/profile"
-            >
-              <span class="block size-5.5" aria-hidden="true"
-                ><%- PROFILE_ICON %></span
-              >
-              <span class="sr-only sm:not-sr-only">Profile</span>
-            </a>
-          </li>
-          <li>
-            <div id="dropdown" class="relative">
-              <button
-                id="dropdown-trigger"
-                class="flex items-center gap-1 rounded-md hover:bg-zinc-100 p-2 cursor-pointer"
-              >
-                <span
-                  class="flex items-center justify-center size-6 bg-white text-sky-500 border border-sky-100 rounded-full"
-                  aria-hidden="true"
-                >
-                  <%= currentUser.first_name.slice(0,1) %><%=
-                  currentUser.last_name.slice(0,1) %>
-                </span>
-                <span class="sr-only sm:not-sr-only">
-                  <%= currentUser.first_name %>
-                </span>
-              </button>
-
-              <div
-                id="dropdown-content"
-                class="absolute top-12 right-0 z-20 bg-white px-6 py-4 rounded-sm shadow-md hidden"
-              >
-                <form action="/auth/logout" method="post">
-                  <input
-                    type="submit"
-                    value="Logout"
-                    class="cursor-pointer hover:text-sky-500 transition-colors duration-200"
-                  />
-                </form>
-              </div>
-            </div>
-          </li>
-          <% } else { %>
-          <li>
-            <a href="/auth/login">Login</a>
-          </li>
-          <li>
-            <a href="/auth/register">Register</a>
-          </li>
-          <% } %>
-        </ul>
-      </div>
-    </nav>
+    <!-- Navbar -->
+    <% if (locals.currentUser) { %>
+    <%- include('partials/navbar') %>
+    <% } %>
 
     <!-- Main -->
-    <main
-      class="mt-14 px-5 max-w-[600px] min-h-[calc(100vh-56px)] mx-auto border-x border-zinc-200"
-    >
+    <main class="max-w-[600px] min-h-[calc(100vh-56px)] mx-auto">
       <%- body %>
     </main>
   </body>

@@ -63,7 +63,7 @@ app.use(passport.session());
 app.use(currentUser);
 
 // Routes
-app.get('/', indexRoutes);
+app.use('/', indexRoutes);
 
 app.use('/auth', authRoutes);
 
