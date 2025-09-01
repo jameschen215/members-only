@@ -8,7 +8,7 @@ export function validate(view: string) {
     if (!errors.isEmpty()) {
       return res.status(400).render(view, {
         errors: errors.mapped(),
-        originalInput: req.body,
+        oldInput: req.body,
       });
     }
 

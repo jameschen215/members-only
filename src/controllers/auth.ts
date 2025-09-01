@@ -77,7 +77,7 @@ export const loginUser: RequestHandler = async (req, res, next) => {
           errors: {
             auth: { msg: info?.message || 'Invalid username or password' },
           },
-          originalInput: req.body,
+          oldInput: req.body,
         });
       }
 
@@ -88,7 +88,7 @@ export const loginUser: RequestHandler = async (req, res, next) => {
 
           return res.status(500).render('login', {
             errors: [{ msg: 'Login failed. Please try again.' }],
-            originalInput: req.body,
+            oldInput: req.body,
           });
         }
         res.redirect('/');

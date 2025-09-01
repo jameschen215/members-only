@@ -22,7 +22,7 @@ export function validateFromServer(form) {
   focusOnFirstErrorField(form);
 }
 
-// Validate field
+// Validate auth field
 export function validateAuthField(field, password = '') {
   const value = field.value.trim();
   let isValid = true;
@@ -76,6 +76,37 @@ export function validateAuthField(field, password = '') {
           isValid = false;
           errorMessage = 'Passwords do not match';
         }
+      }
+      break;
+  }
+
+  if (isValid) {
+    removeErrorStyleAndMessage(field);
+  } else {
+    showErrorStyleAndMessage(field, errorMessage);
+  }
+
+  return isValid;
+}
+
+// Validate message field
+export function validatePostField(field) {
+  const value = field.value.trim();
+  let isValid = true;
+  let errorMessage = '';
+
+  switch (field.name) {
+    case 'title':
+      if (!value) {
+        isValid = false;
+        errorMessage = 'Title is required';
+      }
+      break;
+
+    case 'content':
+      if (!value) {
+        isValid = false;
+        errorMessage = 'Content is required';
       }
       break;
   }

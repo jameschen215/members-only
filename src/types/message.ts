@@ -1,4 +1,4 @@
-import { PublicUserType } from "./user.js";
+import { PublicUserType } from './user.js';
 
 // ===== types/message.ts =====
 export interface MessageType {
@@ -19,5 +19,4 @@ export interface MessageWithAuthor extends MessageType {
 export interface CreateMessageType {
   title: string;
   content: string;
-  user_id: number;
 }
