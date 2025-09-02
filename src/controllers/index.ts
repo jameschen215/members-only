@@ -1,17 +1,20 @@
 import { RequestHandler } from 'express';
 import { matchedData } from 'express-validator';
-import { CreateMessageType } from '../types/message.js';
+import { CreateMessageType, MessageWithAuthor } from '../types/message.js';
+import { createMessage, getAllMessages } from '../models/message.js';
 
-export const getAllPosts: RequestHandler = async (req, res) => {
-  if (!req.isAuthenticated()) {
-    return res.redirect('/landing-page');
+export const getAllPosts: RequestHandler = async (req, res, next) => {
+  try {
+    const messages = await getAllMessages();
+    const messagesWithAuthor: MessageWithAuthor[] = messages.map((message) => ({
+      ...message,
+      author: res.locals.currentUser,
+    }));
+
+    res.render('index', { messages: messagesWithAuthor });
+  } catch (error) {
+    next(error);
   }
-
-  res.render('index');
-};
-
-export const getLandingPage: RequestHandler = (_req, res) => {
-  res.render('landing-page');
 };
 
 export const getPostPage: RequestHandler = (req, res) => {
@@ -23,4 +26,16 @@ export const postNewMessage: RequestHandler = async (req, res, next) => {
   const formData = matchedData(req) as CreateMessageType;
 
   console.log({ formData });
+
+  try {
+    await createMessage(
+      formData.title,
+      formData.content,
+      res.locals.currentUser.id,
+    );
+
+    res.status(210).redirect('/');
+  } catch (error) {
+    next(error);
+  }
 };

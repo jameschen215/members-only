@@ -108,3 +108,7 @@ export const logoutUser: RequestHandler = async (req, res, next) => {
 export const getUserProfile: RequestHandler = async (req, res, next) => {
   res.render('profile');
 };
+
+export const getLandingPage: RequestHandler = (_req, res) => {
+  res.render('landing-page');
+};

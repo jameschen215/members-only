@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import passport from 'passport';
 
 import {
+  getLandingPage,
   getLoginForm,
   getRegisterForm,
   getUserProfile,
@@ -32,6 +32,8 @@ router.post(
 );
 
 router.post('/logout', isAuthenticated, logoutUser);
+
+router.get('/landing-page', getLandingPage);
 
 router.get('/register', getRegisterForm);
 

@@ -7,7 +7,7 @@ export const currentUser: RequestHandler = (req, res, next) => {
     // Actually remove the password
     const { password, ...userWithoutPassword } = req.user as any;
 
-    res.locals.currentUser = userWithoutPassword as PublicUserType;
+    res.locals.currentUser = userWithoutPassword;
     res.locals.formatDate = formatDate;
   }
 

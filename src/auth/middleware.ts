@@ -7,9 +7,12 @@ import { CustomForbiddenError } from '../errors/custom-forbidden-error.js';
 export const isAuthenticated: RequestHandler = (req, res, next) => {
   if (req.isAuthenticated()) return next();
 
-  throw new CustomUnauthorizedError(
-    'You have to log in to access this resource',
-  );
+  console.log('Not authenticated');
+
+  // throw new CustomUnauthorizedError(
+  //   'You have to log in to access this resource',
+  // );
+  res.status(401).redirect('/auth/landing-page');
 
   // res.status(401).json({ message: 'Unauthorized' });
 };

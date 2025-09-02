@@ -1,7 +1,6 @@
 import { Router } from 'express';
 
 import {
-  getLandingPage,
   getAllPosts,
   getPostPage,
   postNewMessage,
@@ -12,11 +11,9 @@ import { validate } from '../middlewares/validate.js';
 
 export const router = Router();
 
-router.get('/', getAllPosts);
+router.get('/', isAuthenticated, getAllPosts);
 
-router.get('/landing-page', getLandingPage);
-
-router.get('/messages/create', getPostPage);
+// router.get('/messages/create', isAuthenticated, getPostPage);
 
 router.post(
   '/messages/create',
