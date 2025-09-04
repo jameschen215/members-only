@@ -1,17 +1,10 @@
-<div class="mt-14 py-8 min-h-[calc(100vh-56px)] border-x border-zinc-200 px-5">
+<div class="mt-14 py-8 min-h-[calc(100vh-56px)] border-x border-zinc-200">
   <!-- header -->
-
-  <% if (locals.currentUser) { %>
-  <div class="flex flex-col items-center gap-6">
+  <div class="flex flex-col items-center gap-6 pb-5 border-b border-zinc-200">
     <h1 class="text-zinc-800 text-3xl font-semibold text-center">
       Hey <%= currentUser.first_name %>, what's up?
     </h1>
-    <!-- <a
-      href="/messages/create"
-      class="bg-sky-500 py-2 px-8 outline-none text-white font-semibold rounded-sm cursor-pointer transition-colors duration-200 hover:bg-sky-400 focus:ring-2 focus:ring-offset-1 focus:ring-sky-400"
-    >
-      New Post
-    </a> -->
+
     <button
       id="post-trigger"
       type="button"
@@ -21,21 +14,49 @@
     </button>
   </div>
 
-  <hr class="text-zinc-200 my-8" />
-  <% } %>
-
   <!-- Posts -->
   <div>
-    <% if (locals.currentUser && locals.messages) { %>
-    <ul>
-      <% messages.map(msg => { %>
-      <li>
-        <p><%= msg.title %></p>
-        <p><%= msg.content %></p>
-        <p><%= msg.author.first_name %></p>
-      </li>
-      <% }) %>
-    </ul>
+    <% if (locals.messages) { %>
+    <% messages.map(msg => { %>
+    <div class="px-2 py-2 border-b border-zinc-200 flex gap-2">
+      <% if (currentUser.role !== 'user') { %>
+      <a href="">
+        <span
+          class="flex items-center justify-center size-10 bg-zinc-100 rounded-full text-lg text-zinc-800 font-semibold"
+          aria-hidden="true"
+        >
+          <%= currentUser.first_name.slice(0,1) %><%=
+                    currentUser.last_name.slice(0,1) %>
+        </span>
+      </a>
+      <% } %>
+      <div>
+        <% if (currentUser.role !== 'user') { %>
+        <div class="flex items-center gap-1.5 mb-1">
+          <p class="font-semibold shrink-0">
+            <%= msg.author.first_name %> <%= msg.author.last_name %>
+          </p>
+          <div class="size-5"><%- include('partials/member-icon') %></div>
+
+          <p class="text-zinc-500 line-clamp-1">
+            <%= msg.author.username %>
+            <span class="text-zinc-500">&#8901;</span>
+            <%=
+            locals.formatDistanceToNowStrict(msg.created_at) %>
+          </p>
+        </div>
+        <% } %>
+        <div class="flex flex-col gap-2">
+          <h2 class="font-semibold"><%= msg.title %></h2>
+          <p><%= msg.content %></p>
+        </div>
+      </div>
+    </div>
+
+    <% }) %>
+
+    <% } else { %>
+    <%- include('partials/no-posts') %>
     <% } %>
   </div>
 </div>

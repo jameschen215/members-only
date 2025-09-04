@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import {
   getAllPosts,
-  getPostPage,
+  // getPostPage,
   postNewMessage,
 } from '../controllers/index.js';
 import { messageSchema } from '../validators/messageSchema.js';
@@ -15,10 +15,4 @@ router.get('/', isAuthenticated, getAllPosts);
 
 // router.get('/messages/create', isAuthenticated, getPostPage);
 
-router.post(
-  '/messages/create',
-  isAuthenticated,
-  messageSchema,
-  validate('create-form'),
-  postNewMessage,
-);
+router.post('/messages/create', isAuthenticated, messageSchema, postNewMessage);

@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { matchedData } from 'express-validator';
+import { matchedData, validationResult } from 'express-validator';
 import { CreateMessageType, MessageWithAuthor } from '../types/message.js';
 import { createMessage, getAllMessages } from '../models/message.js';
 
@@ -17,15 +17,18 @@ export const getAllPosts: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const getPostPage: RequestHandler = (req, res) => {
-  res.render('create-form', { errors: null, oldInput: null });
-};
+// export const getPostPage: RequestHandler = (req, res) => {
+//   res.render('create-form', { errors: null, oldInput: null });
+// };
 
 export const postNewMessage: RequestHandler = async (req, res, next) => {
-  console.log(req.body);
-  const formData = matchedData(req) as CreateMessageType;
+  const errors = validationResult(req);
 
-  console.log({ formData });
+  if (!errors.isEmpty()) {
+    return res.json({ errors: errors.mapped(), oldInput: req.body });
+  }
+
+  const formData = matchedData(req) as CreateMessageType;
 
   try {
     await createMessage(
@@ -34,7 +37,7 @@ export const postNewMessage: RequestHandler = async (req, res, next) => {
       res.locals.currentUser.id,
     );
 
-    res.status(210).redirect('/');
+    res.status(210).json({ success: true });
   } catch (error) {
     next(error);
   }

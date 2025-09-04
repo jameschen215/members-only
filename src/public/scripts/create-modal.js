@@ -1,3 +1,8 @@
+import {
+  removeErrorStyleAndMessage,
+  showErrorStyleAndMessage,
+} from './lib/utils.js';
+
 const ANIMATION_DURATION = 200;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,7 +20,40 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelBtn.addEventListener('click', closeModal);
   }
 
+  // Client side validation
   handleFormInput(form);
+
+  // Server side validation
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+
+    const formData = new FormData(form);
+
+    console.log(formData);
+
+    const res = await fetch('/messages/create', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+
+    if (data.errors) {
+      for (const [fieldName, error] of Object.entries(data.errors)) {
+        const field = form.querySelector(`[name=${fieldName}]`);
+        // field.value = data.oldInput[fieldName];
+        removeErrorStyleAndMessage(field);
+        showErrorStyleAndMessage(field, error.msg);
+      }
+    } else {
+      closeModal();
+      location.reload();
+    }
+  });
+
+  // Remove error info when user is typing
+  form.querySelectorAll('input, textarea').forEach((field) => {
+    field.addEventListener('input', () => removeErrorStyleAndMessage(field));
+  });
 
   function showModal() {
     document.querySelector('nav').setAttribute('inert', '');

@@ -25,3 +25,59 @@
 
 - Optional enhancement:
   A short cool down or a loading spinner can improve UX further.
+
+## Submitting Form Data with JavaScript and Multer
+
+When submitting forms via JavaScript using `FormData` and `fetch()`, there's an important difference in how the data is sent compared to traditional HTML form submissions.
+
+### The Problem
+
+Traditional HTML forms (without JavaScript intervention) submit as `application/x-www-form-urlencoded` by default, which Express can parse using `express.urlencoded({ extended: true })`. However, when using JavaScript's `FormData` object with `fetch()`:
+
+```javascript
+const formData = new FormData(form);
+fetch('/endpoint', {
+  method: 'POST',
+  body: formData, // This forces multipart/form-data
+});
+```
+
+The browser automatically sets the `Content-Type` to `multipart/form-data`, which Express's built-in parsers cannot handle. This results in `req.body` being `undefined` on the server side.
+
+### The Solution: Multer Middleware
+
+To handle `multipart/form-data`, you need the `multer` middleware:
+
+1. **Install multer:**
+
+   ```bash
+   npm install multer
+   ```
+
+2. **Configure and apply the middleware:**
+
+   ```javascript
+   const multer = require('multer');
+   const upload = multer();
+
+   // For forms without file uploads, use upload.none()
+   app.use(upload.none());
+
+   // Or apply to specific routes:
+   app.post(
+     '/messages/create',
+     upload.none(),
+     [
+       // your validation middleware
+     ],
+     yourController,
+   );
+   ```
+
+### Key Learnings
+
+- **Content-Type matters**: JavaScript `FormData` sends as `multipart/form-data`, not `application/x-www-form-urlencoded`
+- **Express built-in parsers are limited**: `express.json()` and `express.urlencoded()` don't handle multipart data
+- **Multer is specifically designed** for parsing `multipart/form-data`, even without file uploads
+- **`FormData` appears empty in console**: Use `Object.fromEntries(formData.entries())` to inspect its contents
+- **Server-side validation works normally** once multer is configured and `req.body` is properly populated

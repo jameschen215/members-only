@@ -8,6 +8,7 @@ import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import expressEjsLayouts from 'express-ejs-layouts';
+import multer from 'multer';
 
 import { pool } from './db/pool.js';
 import { runSetup } from './db/setup.js';
@@ -15,8 +16,10 @@ import { configurePassport } from './auth/passport.js';
 import { router as indexRoutes } from './routes/index.js';
 import { router as authRoutes } from './routes/auth.js';
 import { currentUser } from './middlewares/current-user.js';
+import { formatDate } from './middlewares/format-date.js';
 
 const app = express();
+const upload = multer(); // handle form data upload from js
 const pgSession = connectPgSimple(session);
 
 // Configure ejs
@@ -35,6 +38,9 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(upload.none()); // For forms without file uploads
+app.use(formatDate);
 
 // Session configuration with PostgreSQL store
 app.use(

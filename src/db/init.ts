@@ -95,8 +95,8 @@ export async function initializeDatabase() {
     await client.query(`
       CREATE TABLE messages (
         id integer primary key generated always as identity,
-        title varchar(255) not null,
-        content text not null,
+        title varchar(50) not null,
+        content varchar(300) not null,
         created_at timestamp with time zone default current_timestamp,
         updated_at timestamp with time zone default current_timestamp,
         user_id integer not null,

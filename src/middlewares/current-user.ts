@@ -1,6 +1,5 @@
 import { RequestHandler } from 'express';
-import { PublicUserType } from '../types/user.js';
-import { formatDate } from '../lib/utils.js';
+import { formatDistanceToNow } from 'date-fns';
 
 export const currentUser: RequestHandler = (req, res, next) => {
   if (req.user) {
@@ -8,7 +7,6 @@ export const currentUser: RequestHandler = (req, res, next) => {
     const { password, ...userWithoutPassword } = req.user as any;
 
     res.locals.currentUser = userWithoutPassword;
-    res.locals.formatDate = formatDate;
   }
 
   next(); // always call next()

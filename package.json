@@ -36,6 +36,7 @@
 		"express-validator": "^7.2.1",
 		"helmet": "^8.1.0",
 		"morgan": "^1.10.1",
+		"multer": "^2.0.2",
 		"passport": "^0.7.0",
 		"passport-local": "^1.0.0",
 		"pg": "^8.16.3"
@@ -51,6 +52,7 @@
 		"@types/express-ejs-layouts": "^2.5.4",
 		"@types/express-session": "^1.18.2",
 		"@types/morgan": "^1.9.10",
+		"@types/multer": "^2.0.0",
 		"@types/node": "^24.3.0",
 		"@types/passport-local": "^1.0.38",
 		"@types/pg": "^8.15.5",
