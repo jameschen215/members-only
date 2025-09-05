@@ -1,47 +1,8 @@
-<% const ADMIN_ICON = `
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  class="lucide lucide-shield-user-icon lucide-shield-user w-full h-auto"
->
-  <path
-    d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
-  />
-  <path d="M6.376 18.91a6 6 0 0 1 11.249.003" />
-  <circle cx="12" cy="11" r="4" />
-</svg>
-`; %>
+<div class="min-h-screen border-x border-zinc-200">
+  <!-- header -->
+  <%- include('partials/header')  %>
 
-<!-- CLUB ICON -->
-<% const CLUB_ICON = `
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="24"
-  height="24"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  class="lucide lucide-badge-check-icon lucide-badge-check w-full h-full"
->
-  <path
-    d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
-  />
-  <path d="m9 12 2 2 4-4" />
-</svg>
-`; %>
-
-<div class="min-h-[calc(100vh-56px)] mt-14 py-16 border-x border-zinc-200 px-5">
-  <div class="space-y-3">
+  <div class="space-y-3 px-3 sm:px-5 border-b border-zinc-200 pb-2 mt-5">
     <div class="flex items-start gap-5">
       <div>
         <h1 class="text-zinc-800 text-3xl">
@@ -55,7 +16,7 @@
         class="flex items-center gap-1 border border-zinc-200 rounded-full px-3 py-0.5 mt-1"
       >
         <span class="block size-5 text-sky-500" aria-hidden="true">
-          <%- ADMIN_ICON %>
+          <%- include('partials/icons/admin') %>
         </span>
         <span class="capitalize">Admin user</span>
       </div>
@@ -64,7 +25,7 @@
         class="flex items-center gap-1 border border-zinc-200 rounded-full px-3 py-0.5 mt-1"
       >
         <span class="block size-5 text-sky-500" aria-hidden="true">
-          <%- MEMBER_ICON %>
+          <%- include('partials/icons/member') %>
         </span>
         <span class="capitalize">Club member</span>
       </div>
@@ -74,17 +35,18 @@
         class="mt-1 flex items-center gap-1 border border-zinc-200 rounded-full px-3 py-0.5 hover:bg-zinc-100 transition-colors duration-200"
       >
         <span class="inline-block size-5 text-sky-500" aria-hidden="true">
-          <%- CLUB_ICON %>
+          <%- include('partials/icons/club') %>
         </span>
         <span>Join the club</span>
       </a>
       <% } %>
     </div>
 
-    <div class="flex items-baseline gap-4 text-zinc-600 font-light">
+    <div
+      class="flex flex-col sm:flex-row sm:items-baseline sm:gap-4 text-zinc-600 font-light"
+    >
       <p>
-        Joined in
-        <%= locals.formatDate(currentUser.created_at, 'LLLL yyyy') %>
+        Joined in <%= locals.formatDate(currentUser.created_at, 'LLLL yyyy') %>
       </p>
       <p>
         You've posted
@@ -94,6 +56,21 @@
     </div>
   </div>
 
-  <hr class="text-zinc-200 my-3" />
-  <div>posts</div>
+  <!-- Posts -->
+  <div>
+    <% if (locals.messages) { %>
+    <% messages.map(msg => { %>
+    <div class="px-3 sm:px-5 py-2 border-b border-zinc-200 flex gap-2">
+      <div class="flex flex-col gap-2">
+        <h2 class="font-semibold"><%= msg.title %></h2>
+        <p><%= msg.content %></p>
+      </div>
+    </div>
+
+    <% }) %>
+
+    <% } else { %>
+    <%- include('partials/no-posts') %>
+    <% } %>
+  </div>
 </div>

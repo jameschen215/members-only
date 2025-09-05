@@ -7,20 +7,19 @@
     <link rel="stylesheet" href="/styles/build.css" />
 
     <title>Members Only</title>
-
-    <script type="module" src="/scripts/main.js"></script>
   </head>
 
-  <body>
-    <!-- Navbar -->
-    <% if (locals.currentUser) { %>
-    <%- include('partials/navbar') %>
-    <% } %>
+  <body class="">
+    <div class="flex justify-center">
+      <!-- sidebar -->
+      <%- include('partials/sidebar') %>
 
-    <!-- Main -->
-    <main class="max-w-[600px] min-h-[calc(100vh-56px)] mx-auto">
-      <%- body %>
-    </main>
+      <!-- main -->
+      <main class="w-full max-w-xl"><%- body %></main>
+
+      <!-- Search -->
+      <%- include('partials/explore') %>
+    </div>
 
     <!-- Modal -->
     <%- include('partials/create-modal') %>

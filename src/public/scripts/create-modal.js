@@ -7,6 +7,7 @@ const ANIMATION_DURATION = 200;
 
 document.addEventListener('DOMContentLoaded', () => {
   const postTrigger = document.querySelector('#post-trigger');
+  const postTriggerFixed = document.querySelector('#post-trigger-fixed');
   const modal = document.querySelector('#create-modal');
   const formContainer = document.querySelector('#form-container');
   const form = document.querySelector('#create-form');
@@ -14,6 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (postTrigger) {
     postTrigger.addEventListener('click', showModal);
+  }
+
+  if (postTriggerFixed) {
+    postTriggerFixed.addEventListener('click', showModal);
   }
 
   if (cancelBtn) {

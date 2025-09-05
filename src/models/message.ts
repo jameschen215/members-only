@@ -9,6 +9,17 @@ export async function getAllMessages(): Promise<MessageType[]> {
   return rows;
 }
 
+export async function getMessagesByUserId(
+  userId: number,
+): Promise<MessageType[]> {
+  const { rows }: { rows: MessageType[] } = await pool.query(
+    `SELECT * FROM messages WHERE user_id = $1`,
+    [userId],
+  );
+
+  return rows;
+}
+
 export async function createMessage(
   title: string,
   content: string,

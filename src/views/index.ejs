@@ -1,24 +1,12 @@
-<div class="mt-14 py-8 min-h-[calc(100vh-56px)] border-x border-zinc-200">
+<div class="min-h-screen border-x border-zinc-200">
   <!-- header -->
-  <div class="flex flex-col items-center gap-6 pb-5 border-b border-zinc-200">
-    <h1 class="text-zinc-800 text-3xl font-semibold text-center">
-      Hey <%= currentUser.first_name %>, what's up?
-    </h1>
-
-    <button
-      id="post-trigger"
-      type="button"
-      class="bg-sky-500 py-2 px-8 outline-none text-white font-semibold rounded-sm cursor-pointer transition-colors duration-200 hover:bg-sky-400 focus:ring-2 focus:ring-offset-1 focus:ring-sky-400"
-    >
-      New Post
-    </button>
-  </div>
+  <%- include('partials/header')  %>
 
   <!-- Posts -->
   <div>
     <% if (locals.messages) { %>
     <% messages.map(msg => { %>
-    <div class="px-2 py-2 border-b border-zinc-200 flex gap-2">
+    <div class="px-3 sm:px-5 py-5 border-b border-zinc-200 flex gap-2">
       <% if (currentUser.role !== 'user') { %>
       <a href="">
         <span
@@ -36,7 +24,9 @@
           <p class="font-semibold shrink-0">
             <%= msg.author.first_name %> <%= msg.author.last_name %>
           </p>
-          <div class="size-5"><%- include('partials/member-icon') %></div>
+          <div class="size-5 text-sky-500">
+            <%- include('partials/icons/member') %>
+          </div>
 
           <p class="text-zinc-500 line-clamp-1">
             <%= msg.author.username %>
@@ -59,4 +49,17 @@
     <%- include('partials/no-posts') %>
     <% } %>
   </div>
+
+  <!-- Floating adding trigger -->
+  <button
+    id="post-trigger-fixed"
+    type="button"
+    class="sm:hidden fixed bottom-4 right-4 p-2 bg-sky-500 outline-none text-white font-semibold rounded-full cursor-pointer transition-colors duration-200 hover:bg-sky-400 focus:ring-2 focus:ring-offset-1 focus:ring-sky-400"
+  >
+    <span class="block w-full h-full" aria-hidden="true">
+      <%- include('partials/icons/plus') %>
+    </span>
+  </button>
 </div>
+
+<script type="module" src="/scripts/homepage.js"></script>

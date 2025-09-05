@@ -1,7 +1,11 @@
 import { RequestHandler } from 'express';
 import { matchedData, validationResult } from 'express-validator';
 import { CreateMessageType, MessageWithAuthor } from '../types/message.js';
-import { createMessage, getAllMessages } from '../models/message.js';
+import {
+  createMessage,
+  getAllMessages,
+  getMessagesByUserId,
+} from '../models/message.js';
 
 export const getAllPosts: RequestHandler = async (req, res, next) => {
   try {

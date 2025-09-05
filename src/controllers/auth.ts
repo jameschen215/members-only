@@ -7,6 +7,7 @@ import { RegisterFormData } from '../types/auth.js';
 import { capitalize } from '../lib/utils.js';
 import { createUser } from '../models/user.js';
 import { PublicUserType } from '../types/user.js';
+import { getMessagesByUserId } from '../models/message.js';
 
 export const getRegisterForm: RequestHandler = (req, res) => {
   res.render('register', { errors: null, originalInput: null });
@@ -106,7 +107,15 @@ export const logoutUser: RequestHandler = async (req, res, next) => {
 };
 
 export const getUserProfile: RequestHandler = async (req, res, next) => {
-  res.render('profile');
+  const userId = res.locals.currentUser.id;
+
+  try {
+    const messages = await getMessagesByUserId(userId);
+
+    res.render('profile', { messages });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getLandingPage: RequestHandler = (_req, res) => {
