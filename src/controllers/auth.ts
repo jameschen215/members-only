@@ -111,8 +111,12 @@ export const getUserProfile: RequestHandler = async (req, res, next) => {
 
   try {
     const messages = await getMessagesByUserId(userId);
+    const messagesWithAuthors = messages.map((msg) => ({
+      ...msg,
+      author: res.locals.currentUser,
+    }));
 
-    res.render('profile', { messages });
+    res.render('profile', { messages: messagesWithAuthors });
   } catch (error) {
     next(error);
   }

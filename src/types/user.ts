@@ -11,7 +11,6 @@ export interface UserType {
   username: string;
   password: string;
   role: UserRole;
-  is_admin: boolean;
   created_at?: Date;
   updated_at?: Date;
 }
@@ -23,7 +22,6 @@ export interface PublicUserType {
   last_name: string;
   username: string;
   role: UserRole;
-  is_admin: boolean;
   created_at?: Date;
   updated_at?: Date;
 }

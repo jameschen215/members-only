@@ -8,42 +8,73 @@ const LINKS = [
 ]
 %>
 
-<% const FILTERED_LINKS = locals.currentUser.role === 'admin' ? LINKS :
-LINKS.filter(l => l.name !== 'Users') %>
+<% const FILTERED_LINKS = (locals.currentUser && locals.currentUser.role ===
+'admin') ? LINKS : LINKS.filter(l => l.name !== 'Users'); %>
 
 <aside
-  class="sm:sticky absolute top-0 left-0 sm:translate-x-0 -translate-x-full w-60 px-3 h-screen bg-white sm:border-none border-r border-zinc-200 z-30 transition-transform duration-200"
+  class="sm:sticky sm:w-20 lg:w-60 absolute top-0 left-0 sm:translate-x-0 -translate-x-full w-60 px-3 h-screen bg-white sm:border-none border-r border-zinc-200 z-30 transition-transform duration-200"
 >
   <!-- user info -->
-  <button
-    type="button"
-    class="w-full pr-3 flex items-center text-start mt-8 group hover:bg-zinc-50 rounded-full cursor-pointer"
-  >
-    <!-- image -->
-    <span
-      class="ml-2 group-hover:ml-0 group-hover:scale-[80%] shrink-0 transition-all duration-100 flex items-center justify-center size-12 bg-white border border-zinc-100 rounded-full text-2xl text-zinc-700"
-      aria-hidden="true"
+
+  <div class="relative">
+    <button
+      id="menu-toggler"
+      type="button"
+      class="w-full pr-3 sm:pr-0 lg:pr-3 flex items-center sm:justify-center text-start mt-8 group hover:bg-zinc-50 rounded-full cursor-pointer"
     >
-      <%= currentUser.first_name.slice(0,1) %><%=
+      <!-- image -->
+      <span
+        class="ml-2 sm:ml-0 lg:ml-2 group-hover:ml-0 group-hover:scale-[80%] sm:group-hover:scale-[90%] lg:group-hover:scale-[90%] shrink-0 transition-all duration-100 flex items-center justify-center size-12 bg-white border border-zinc-100 rounded-full text-2xl text-zinc-700"
+        aria-hidden="true"
+      >
+        <%= currentUser.first_name.slice(0,1) %><%=
                   currentUser.last_name.slice(0,1) %>
-    </span>
+      </span>
 
-    <div
-      class="flex-1 flex justify-between opacity-0 group-hover:opacity-100 group-hover:ml-1 transition-all duration-100"
-    >
-      <!-- username -->
-      <div class="flex flex-col w-32">
-        <span class="font-semibold text-sm -mb-1">
-          <%= locals.currentUser.first_name%>
-        </span>
-        <span class="text-xs text-zinc-400 font-light line-clamp-1">
-          <%= locals.currentUser.username %>
-        </span>
+      <div
+        class="sm:hidden lg:flex flex-1 flex justify-between opacity-0 group-hover:opacity-100 group-hover:ml-1 transition-all duration-100"
+      >
+        <!-- username -->
+        <div class="flex flex-col w-32">
+          <span class="font-semibold text-sm -mb-1">
+            <%= locals.currentUser.first_name%>
+          </span>
+          <span class="text-xs text-zinc-400 font-light line-clamp-1">
+            <%= locals.currentUser.username %>
+          </span>
+        </div>
+
+        <div class="text-xl flex items-center justify-center">&#8943;</div>
       </div>
+    </button>
 
-      <div class="text-xl flex items-center justify-center">&#8943;</div>
-    </div>
-  </button>
+    <!-- dropdown menu -->
+    <ul
+      id="dropdown-menu"
+      class="hidden absolute w-full min-w-max p-3 bottom-0 left-0 translate-y-[calc(100%+8px)] bg-white border border-zinc-100 rounded-md"
+    >
+      <li class="block">
+        <a
+          href="/auth/profile"
+          class="flex items-center gap-4 w-full p-2 rounded-sm hover:bg-zinc-100 transition-colors duration-200"
+        >
+          <span class="block size-5"><%- include('./icons/profile') %></span>
+          <span>Go to profile</span>
+        </a>
+      </li>
+      <li class="block">
+        <form action="/auth/logout" method="post">
+          <button
+            type="submit"
+            class="w-full p-2 rounded-sm hover:bg-zinc-100 flex justify-start items-center gap-4 transition-colors duration-200 cursor-pointer"
+          >
+            <span class="block size-5"><%- include('./icons/logout') %></span>
+            <span>Sign out</span>
+          </button>
+        </form>
+      </li>
+    </ul>
+  </div>
 
   <!-- navigation -->
   <nav class="mt-8">
@@ -52,12 +83,12 @@ LINKS.filter(l => l.name !== 'Users') %>
       <li>
         <a
           href="<%= link.href  %>"
-          class="flex items-center gap-2 text-lg w-full h-full px-2 py-2 rounded-md hover:bg-zinc-50 focus:bg-zinc-50 font-light hover:font-semibold focus:font-semibold transition-all duration-200"
+          class="flex items-center sm:justify-center lg:justify-start gap-2 text-lg w-full h-full px-2 py-2 rounded-md hover:bg-zinc-50 focus:bg-zinc-50 font-light hover:font-semibold focus:font-semibold transition-all duration-200"
         >
           <span class="inline-block size-6 text-zinc-700" aria-hidden="true">
             <%- include(link.icon) %>
           </span>
-          <span><%= link.name %></span>
+          <span class="sm:sr-only lg:not-sr-only"><%= link.name %></span>
         </a>
       </li>
       <% }) %>
@@ -65,14 +96,18 @@ LINKS.filter(l => l.name !== 'Users') %>
   </nav>
 
   <!-- Post button -->
-  <button
-    id="post-trigger"
-    type="button"
-    class="mt-10 bg-sky-500 py-2 px-5 outline-none text-white text-sm font-semibold rounded-full cursor-pointer transition-colors duration-200 hover:bg-sky-400 focus:ring-2 focus:ring-offset-1 focus:ring-sky-400 flex items-center justify-center gap-1"
-  >
-    <span class="inline-block size-5"><%- include('./icons/post') %></span>
-    New Post
-  </button>
+  <div class="w-full flex items-center sm:justify-center lg:justify-start">
+    <button
+      id="post-trigger"
+      type="button"
+      class="mt-10 bg-sky-500 py-2 px-5 sm:px-2 lg:px-5 outline-none text-white text-sm font-semibold rounded-full cursor-pointer transition-colors duration-200 hover:bg-sky-400 focus:ring-2 focus:ring-offset-1 focus:ring-sky-400 flex items-center justify-center gap-1"
+    >
+      <span class="inline-block size-5" aria-hidden="true">
+        <%- include('./icons/post') %>
+      </span>
+      <span class="sm:sr-only lg:not-sr-only">New Post </span>
+    </button>
+  </div>
 </aside>
 
 <script type="module" src="/scripts/sidebar.js"></script>

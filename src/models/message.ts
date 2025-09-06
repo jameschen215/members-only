@@ -1,19 +1,42 @@
 import { pool } from '../db/pool.js';
-import { MessageType } from '../types/message.js';
+import { MessageType, MessageWithAuthor } from '../types/message.js';
 
-export async function getAllMessages(): Promise<MessageType[]> {
-  const { rows }: { rows: MessageType[] } = await pool.query(
-    `SELECT * FROM messages ORDER BY updated_at;`,
-  );
+export async function getAllMessages(): Promise<MessageWithAuthor[]> {
+  const { rows } = await pool.query(`
+    SELECT 
+      m.id, m.title, m.content, m.user_id, m.created_at, m.updated_at,
+      u.id AS author_id, u.first_name, u.last_name, u.username, u.role, u.created_at AS user_created_at, u.updated_at AS user_updated_at
+    FROM messages m
+    JOIN users u ON m.user_id = u.id
+    ORDER BY m.created_at DESC;
+    `);
 
-  return rows;
+  const messages = rows.map((row) => ({
+    id: row.id,
+    title: row.title,
+    content: row.content,
+    user_id: row.user_id,
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+    author: {
+      id: row.author_id,
+      first_name: row.first_name,
+      last_name: row.last_name,
+      username: row.username,
+      role: row.role,
+      created_at: row.user_created_at,
+      updated_at: row.user_updated_at,
+    },
+  })) as MessageWithAuthor[];
+
+  return messages;
 }
 
 export async function getMessagesByUserId(
   userId: number,
 ): Promise<MessageType[]> {
   const { rows }: { rows: MessageType[] } = await pool.query(
-    `SELECT * FROM messages WHERE user_id = $1`,
+    `SELECT * FROM messages WHERE user_id = $1 ORDER BY created_at DESC`,
     [userId],
   );
 

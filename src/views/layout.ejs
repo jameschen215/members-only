@@ -12,13 +12,17 @@
   <body class="">
     <div class="flex justify-center">
       <!-- sidebar -->
+      <% if (locals.currentUser) { %>
       <%- include('partials/sidebar') %>
+      <% } %>
 
       <!-- main -->
       <main class="w-full max-w-xl"><%- body %></main>
 
       <!-- Search -->
+      <% if (locals.currentUser) { %>
       <%- include('partials/explore') %>
+      <% } %>
     </div>
 
     <!-- Modal -->

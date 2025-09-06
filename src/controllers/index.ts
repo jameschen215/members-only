@@ -7,15 +7,15 @@ import {
   getMessagesByUserId,
 } from '../models/message.js';
 
-export const getAllPosts: RequestHandler = async (req, res, next) => {
+export const getAllPosts: RequestHandler = async (_req, res, next) => {
   try {
-    const messages = await getAllMessages();
-    const messagesWithAuthor: MessageWithAuthor[] = messages.map((message) => ({
-      ...message,
-      author: res.locals.currentUser,
-    }));
+    const messages: MessageWithAuthor[] = await getAllMessages();
+    // const messagesWithAuthor: MessageWithAuthor[] = messages.map((message) => ({
+    //   ...message,
+    //   author: res.locals.currentUser,
+    // }));
 
-    res.render('index', { messages: messagesWithAuthor });
+    res.render('index', { messages });
   } catch (error) {
     next(error);
   }
