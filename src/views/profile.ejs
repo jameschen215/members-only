@@ -18,46 +18,46 @@
       class="absolute -top-0 -translate-y-1/2 flex items-center justify-center size-20 bg-white border border-zinc-100 rounded-full text-5xl text-zinc-700"
       aria-hidden="true"
     >
-      <%= currentUser.first_name.slice(0,1) %><%=
-                  currentUser.last_name.slice(0,1) %>
+      <%= user.first_name.slice(0,1) %><%=
+                  user.last_name.slice(0,1) %>
     </div>
 
     <!-- Name and icon -->
     <div class="flex items-start gap-5">
       <div>
         <h1 class="text-zinc-800 text-3xl">
-          <%= currentUser.first_name %> <%= currentUser.last_name %>
+          <%= user.first_name %> <%= user.last_name %>
         </h1>
-        <p class="text-zinc-500"><%= currentUser.username %></p>
+        <p class="text-zinc-500"><%= user.username %></p>
       </div>
 
-      <% if (currentUser.role === 'admin') { %>
+      <% if (user.role === 'admin') { %>
       <div
         class="flex items-center gap-1 border border-zinc-200 rounded-full px-3 py-0.5 mt-1"
       >
-        <span class="block size-5 text-sky-500" aria-hidden="true">
+        <span class="block size-4 text-sky-500" aria-hidden="true">
           <%- include('partials/icons/admin') %>
         </span>
-        <span class="capitalize">Admin user</span>
+        <span class="text-sm">Admin user</span>
       </div>
-      <% } else if (currentUser.role === 'moderator') { %>
+      <% } else if (user.role === 'moderator') { %>
       <div
         class="flex items-center gap-1 border border-zinc-200 rounded-full px-3 py-0.5 mt-1"
       >
-        <span class="block size-5 text-sky-500" aria-hidden="true">
+        <span class="block size-4 text-sky-500" aria-hidden="true">
           <%- include('partials/icons/member') %>
         </span>
-        <span class="capitalize">Club member</span>
+        <span class="text-sm">Club member</span>
       </div>
-      <% } else { %>
+      <% } else if (user.id === currentUser.id) { %>
       <a
         href="/auth/upgrade"
-        class="mt-1 flex items-center gap-1 border border-zinc-200 rounded-full px-3 py-0.5 hover:bg-zinc-100 transition-colors duration-200"
+        class="mt-1 flex items-center gap-1 border border-zinc-200 rounded-full px-2 py-1 hover:bg-zinc-100 transition-colors duration-200"
       >
-        <span class="inline-block size-5 text-sky-500" aria-hidden="true">
+        <span class="inline-block size-4 text-sky-500" aria-hidden="true">
           <%- include('partials/icons/club') %>
         </span>
-        <span>Join the club</span>
+        <span class="text-sm">Join the club</span>
       </a>
       <% } %>
     </div>
@@ -66,13 +66,13 @@
     <div
       class="flex flex-col sm:flex-row sm:items-baseline sm:gap-4 text-zinc-600 font-light"
     >
-      <p>
-        Joined in <%= locals.formatDate(currentUser.created_at, 'LLLL yyyy') %>
-      </p>
+      <p>Joined in <%= locals.formatDate(user.created_at, 'LLLL yyyy') %></p>
       <p>
         You've posted
-        <span class="text-zinc-900 font-semibold">0</span>
-        message<span id="plural">s</span>
+        <span class="text-zinc-900 font-semibold">
+          <%= locals.messages.length %>
+        </span>
+        <span><%= messages.length !== 1 ? 'messages' : 'message' %></span>
       </p>
     </div>
   </div>
@@ -88,8 +88,8 @@
           class="flex items-center justify-center size-10 bg-zinc-100 rounded-full text-lg text-zinc-800 font-semibold"
           aria-hidden="true"
         >
-          <%= msg.author.first_name.slice(0,1) %><%=
-                    msg.author.last_name.slice(0,1) %>
+          <%= user.first_name.slice(0,1) %><%=
+                    user.last_name.slice(0,1) %>
         </span>
       </a>
 
@@ -97,25 +97,27 @@
       <div class="flex flex-col gap-2">
         <div class="flex items-center gap-1.5 mb-1">
           <p class="font-semibold shrink-0">
-            <%= msg.author.first_name %> <%= msg.author.last_name %>
+            <%= user.first_name %> <%= user.last_name %>
           </p>
 
-          <% if (msg.author.role !== 'user') { %>
+          <% if (user.role !== 'user') { %>
           <div class="size-5 text-sky-500">
             <%- include('partials/icons/member') %>
           </div>
           <% } %>
 
           <p class="text-zinc-500 line-clamp-1">
-            <%= msg.author.username %>
+            <%= user.username %>
             <span class="text-zinc-500">&#8901;</span>
             <%=
             locals.formatDistanceToNowStrict(msg.created_at) %>
           </p>
         </div>
 
-        <h2 class="font-semibold"><%= msg.title %></h2>
-        <p><%= msg.content %></p>
+        <p>
+          <%= msg.content %>
+          <span class="text-blue-500">#<%= msg.title %></span>
+        </p>
       </div>
     </div>
 

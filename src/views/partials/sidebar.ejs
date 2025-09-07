@@ -2,7 +2,7 @@
 const LINKS = [
   {name: 'Home', icon: './icons/home', href: '/'},
   {name: 'Explore', icon: './icons/explore', href: '/search'},
-  {name: 'Profile', icon: './icons/profile', href: '/auth/profile'},
+  {name: 'Profile', icon: './icons/profile', href: `/auth/users/${currentUser.id}/profile`},
   {name: 'Users', icon: './icons/users', href: '/auth/users'},
 
 ]
@@ -20,11 +20,11 @@ const LINKS = [
     <button
       id="menu-toggler"
       type="button"
-      class="w-full pr-3 sm:pr-0 lg:pr-3 flex items-center sm:justify-center text-start mt-8 group hover:bg-zinc-50 rounded-full cursor-pointer"
+      class="lg:w-full pr-0 lg:pr-3 flex items-center justify-center lg:text-start mt-8 group hover:bg-zinc-50 rounded-full cursor-pointer"
     >
       <!-- image -->
       <span
-        class="ml-2 sm:ml-0 lg:ml-2 group-hover:ml-0 group-hover:scale-[80%] sm:group-hover:scale-[90%] lg:group-hover:scale-[90%] shrink-0 transition-all duration-100 flex items-center justify-center size-12 bg-white border border-zinc-100 rounded-full text-2xl text-zinc-700"
+        class="ml-0 lg:ml-2 group-hover:ml-0 group-hover:scale-[80%] shrink-0 transition-all duration-100 flex items-center justify-center size-12 bg-white border border-zinc-100 rounded-full text-2xl text-zinc-700"
         aria-hidden="true"
       >
         <%= currentUser.first_name.slice(0,1) %><%=
@@ -32,16 +32,16 @@ const LINKS = [
       </span>
 
       <div
-        class="sm:hidden lg:flex flex-1 flex justify-between opacity-0 group-hover:opacity-100 group-hover:ml-1 transition-all duration-100"
+        class="hidden lg:flex lg:flex-1 justify-between opacity-0 lg:group-hover:opacity-100 lg:group-hover:ml-1 transition-all duration-100"
       >
         <!-- username -->
         <div class="flex flex-col w-32">
           <span class="font-semibold text-sm -mb-1">
             <%= locals.currentUser.first_name%>
           </span>
-          <span class="text-xs text-zinc-400 font-light line-clamp-1">
-            <%= locals.currentUser.username %>
-          </span>
+          <span class="text-xs text-zinc-400 font-light line-clamp-1"
+            ><%= locals.currentUser.username %></span
+          >
         </div>
 
         <div class="text-xl flex items-center justify-center">&#8943;</div>
@@ -55,7 +55,7 @@ const LINKS = [
     >
       <li class="block">
         <a
-          href="/auth/profile"
+          href="<%= `/auth/users/${currentUser.id}/profile` %>"
           class="flex items-center gap-4 w-full p-2 rounded-sm hover:bg-zinc-100 transition-colors duration-200"
         >
           <span class="block size-5"><%- include('./icons/profile') %></span>
@@ -83,7 +83,7 @@ const LINKS = [
       <li>
         <a
           href="<%= link.href  %>"
-          class="flex items-center sm:justify-center lg:justify-start gap-2 text-lg w-full h-full px-2 py-2 rounded-md hover:bg-zinc-50 focus:bg-zinc-50 font-light hover:font-semibold focus:font-semibold transition-all duration-200"
+          class="<%= currentPath === link.href ? 'bg-zinc-50 font-semibold' : '' %> flex items-center sm:justify-center lg:justify-start gap-2 text-lg w-full h-full px-2 py-2 rounded-md hover:bg-zinc-50 focus:bg-zinc-50 transition-all duration-200"
         >
           <span class="inline-block size-6 text-zinc-700" aria-hidden="true">
             <%- include(link.icon) %>

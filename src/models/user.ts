@@ -1,5 +1,14 @@
-import { pool } from "../db/pool.js";
-import { UserType } from "../types/user.js";
+import { pool } from '../db/pool.js';
+import { PublicUserType, UserType } from '../types/user.js';
+
+export async function getAllUsers(): Promise<PublicUserType[]> {
+  const { rows }: { rows: PublicUserType[] } = await pool.query(`
+    SELECT id, first_name, last_name, username, role, created_at, updated_at
+    FROM users ORDER BY created_at DESC;
+    `);
+
+  return rows;
+}
 
 export async function getUserByUsername(
   username: string,

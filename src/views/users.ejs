@@ -1,0 +1,75 @@
+<div class="min-h-screen border-x border-zinc-200">
+  <!-- Back button -->
+  <div
+    class="h-18 bg-zinc-50 py-2 px-1 sm:px-3 flex items-center gap-5 border-b border-zinc-200"
+  >
+    <button
+      id="back-btn-on-users"
+      type="button"
+      class="cursor-pointer hover:bg-zinc-200 size-10 p-2 rounded-lg text-zinc-700 transition-colors duration-200"
+    >
+      <%- include('partials/icons/arrow-left') %>
+    </button>
+    <h1 class="text-zinc-950 text-3xl">All users</h1>
+  </div>
+
+  <!-- Users list -->
+  <% if (locals.users) { %>
+  <% users.map(user => { %>
+  <a
+    href="<%= `/auth/users/${user.id}/profile` %>"
+    class="sm:px-5 py-5 border-b border-zinc-200 flex flex-col gap-2 cursor-pointer"
+  >
+    <!-- Line 1 -->
+    <div class="flex items-center gap-2">
+      <!-- Avatar -->
+      <div
+        class="flex items-center justify-center size-12 bg-zinc-50 border border-zinc-100 rounded-full text-lg text-zinc-800 font-semibold"
+        aria-hidden="true"
+      >
+        <%= user.first_name.slice(0,1) %><%=
+                    user.last_name.slice(0,1) %>
+      </div>
+
+      <!-- username -->
+      <div class="flex items-start gap-5">
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="text-zinc-950 font-semibold">
+              <%= user.first_name %> <%= user.last_name %>
+            </h2>
+
+            <% if (user.role === 'admin') { %>
+            <span class="block size-5 text-sky-500" aria-hidden="true">
+              <%- include('partials/icons/admin') %>
+            </span>
+            <% } else if (user.role === 'moderator') { %>
+            <div
+              class="flex items-center gap-1 border border-zinc-200 rounded-full px-3 py-0.5 mt-1"
+            >
+              <span class="block size-5 text-sky-500" aria-hidden="true">
+                <%- include('partials/icons/member') %>
+              </span>
+            </div>
+            <% } %>
+          </div>
+          <p class="text-zinc-500 text-sm"><%= user.username %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- line 2: user one-line-bio -->
+  </a>
+
+  <% }) %>
+  <% } else { %>
+  <div class="flex flex-col items-center gap-5 mt-20">
+    <span class="block size-30 p-7 text-zinc-300 bg-zinc-100 rounded-full">
+      <%- include('partials/icons/users') %>
+    </span>
+    <span class="text-zinc-500 text-lg">No users yet.</span>
+  </div>
+  <% } %>
+</div>
+
+<script type="module" src="/scripts/users.js"></script>

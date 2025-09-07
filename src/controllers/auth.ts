@@ -5,9 +5,10 @@ import { matchedData } from 'express-validator';
 
 import { RegisterFormData } from '../types/auth.js';
 import { capitalize } from '../lib/utils.js';
-import { createUser } from '../models/user.js';
+import { createUser, getAllUsers, getUserById } from '../models/user.js';
 import { PublicUserType } from '../types/user.js';
 import { getMessagesByUserId } from '../models/message.js';
+import { currentUser } from '../middlewares/current-user.js';
 
 export const getRegisterForm: RequestHandler = (req, res) => {
   res.render('register', { errors: null, originalInput: null });
@@ -107,16 +108,23 @@ export const logoutUser: RequestHandler = async (req, res, next) => {
 };
 
 export const getUserProfile: RequestHandler = async (req, res, next) => {
-  const userId = res.locals.currentUser.id;
+  const userId = Number(req.params.userId);
+  let user: PublicUserType | undefined = undefined;
 
   try {
-    const messages = await getMessagesByUserId(userId);
-    const messagesWithAuthors = messages.map((msg) => ({
-      ...msg,
-      author: res.locals.currentUser,
-    }));
+    if (res.locals.currentUser.id === userId) {
+      user = res.locals.currentUser;
+    } else {
+      const userWithPassword = await getUserById(userId);
+      if (userWithPassword) {
+        const { password, ...userWithoutPassword } = userWithPassword;
+        user = userWithoutPassword;
+      }
+    }
 
-    res.render('profile', { messages: messagesWithAuthors });
+    const messages = await getMessagesByUserId(userId);
+
+    res.render('profile', { user, messages });
   } catch (error) {
     next(error);
   }
@@ -124,4 +132,14 @@ export const getUserProfile: RequestHandler = async (req, res, next) => {
 
 export const getLandingPage: RequestHandler = (_req, res) => {
   res.render('landing-page');
+};
+
+export const getAllUsersPage: RequestHandler = async (_req, res, next) => {
+  try {
+    const users = await getAllUsers();
+
+    res.render('users', { users });
+  } catch (error) {
+    next(error);
+  }
 };

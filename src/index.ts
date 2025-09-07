@@ -17,6 +17,7 @@ import { router as indexRoutes } from './routes/index.js';
 import { router as authRoutes } from './routes/auth.js';
 import { currentUser } from './middlewares/current-user.js';
 import { formatDate } from './middlewares/format-date.js';
+import { setCurrentPath } from './middlewares/current-path.js';
 
 const app = express();
 const upload = multer(); // handle form data upload from js
@@ -41,6 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(upload.none()); // For forms without file uploads
 app.use(formatDate);
+app.use(setCurrentPath);
 
 // Session configuration with PostgreSQL store
 app.use(

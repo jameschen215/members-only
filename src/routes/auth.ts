@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import {
+  getAllUsersPage,
   getLandingPage,
   getLoginForm,
   getRegisterForm,
@@ -9,7 +10,11 @@ import {
   logoutUser,
   registerNewUser,
 } from '../controllers/auth.js';
-import { isAuthenticated, isNotAuthenticated } from '../auth/middleware.js';
+import {
+  isAuthenticated,
+  isNotAuthenticated,
+  requireRole,
+} from '../auth/middleware.js';
 import { loginSchema, registerSchema } from '../validators/userSchema.js';
 import { validate } from '../middlewares/validate.js';
 
@@ -39,4 +44,6 @@ router.get('/register', getRegisterForm);
 
 router.get('/login', getLoginForm);
 
-router.get('/profile', isAuthenticated, getUserProfile);
+router.get('/users', requireRole(['admin']), getAllUsersPage);
+
+router.get('/users/:userId/profile', isAuthenticated, getUserProfile);
