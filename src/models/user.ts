@@ -40,3 +40,18 @@ export async function createUser(
 
   return rows[0];
 }
+
+export async function upgradeUserRole(
+  user: PublicUserType,
+): Promise<UserType | null> {
+  if (user.role !== 'user') {
+    return null;
+  }
+
+  const { rows } = await pool.query(
+    `UPDATE users SET role = $1 WHERE id = $2 RETURNING *;`,
+    ['moderator', user.id],
+  );
+
+  return rows[0];
+}

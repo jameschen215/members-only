@@ -1,11 +1,16 @@
 import bcrypt from 'bcrypt';
 import passport from 'passport';
 import { RequestHandler } from 'express';
-import { matchedData } from 'express-validator';
+import { matchedData, validationResult } from 'express-validator';
 
 import { RegisterFormData } from '../types/auth.js';
 import { capitalize } from '../lib/utils.js';
-import { createUser, getAllUsers, getUserById } from '../models/user.js';
+import {
+  createUser,
+  getAllUsers,
+  getUserById,
+  upgradeUserRole,
+} from '../models/user.js';
 import { PublicUserType } from '../types/user.js';
 import { getMessagesByUserId } from '../models/message.js';
 import { currentUser } from '../middlewares/current-user.js';
@@ -139,6 +144,20 @@ export const getAllUsersPage: RequestHandler = async (_req, res, next) => {
     const users = await getAllUsers();
 
     res.render('users', { users });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUpgradeRoleForm: RequestHandler = (req, res, next) => {
+  res.render('upgrade', { oldInput: null, errors: null });
+};
+
+export const upgradeUser: RequestHandler = async (req, res, next) => {
+  try {
+    await upgradeUserRole(res.locals.currentUser);
+
+    res.redirect(`/auth/users/${res.locals.currentUser.id}/profile`);
   } catch (error) {
     next(error);
   }
