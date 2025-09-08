@@ -34,12 +34,12 @@
       <% if (user.role === 'admin') { %>
       <!-- Admin icon -->
       <div
-        class="flex items-center gap-1 border border-zinc-200 rounded-full px-3 py-0.5 mt-1"
+        class="flex items-center gap-1 border border-emerald-200 hover:bg-emerald-50 rounded-full px-2 py-1 mt-1"
       >
-        <span class="block size-5 text-sky-500" aria-hidden="true">
+        <span class="block size-5 text-emerald-600" aria-hidden="true">
           <%- include('partials/icons/admin') %>
         </span>
-        <span class="text-sm">Admin user</span>
+        <span class="text-sm text-emerald-600 font-semibold">Admin user</span>
       </div>
       <% } else if (user.role === 'moderator') { %>
       <!-- Club member icon -->

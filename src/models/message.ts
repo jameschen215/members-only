@@ -56,3 +56,12 @@ export async function createMessage(
 
   return rows[0];
 }
+
+export async function deleteMessageById(id: number): Promise<MessageType> {
+  const { rows } = await pool.query(
+    'DELETE FROM messages WHERE id = $1 RETURNING *',
+    [id],
+  );
+
+  return rows[0];
+}

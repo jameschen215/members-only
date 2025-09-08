@@ -1,30 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const header = document.querySelector('header');
+  const dropdownTriggers = document.querySelectorAll(
+    '[id^="dropdown-trigger-"]',
+  );
 
-  const threshold = 50;
-  let lastScroll = 0;
-  let accumulatedScroll = 0;
+  if (dropdownTriggers.length === 0) return;
 
-  // window.addEventListener('scroll', () => {
-  //   const currentScroll = window.pageYOffset;
-  //   const delta = currentScroll - lastScroll;
+  document.addEventListener('click', (ev) => {
+    if (ev.target.closest('[id^="dropdown-trigger-"]')) {
+      const trigger = ev.target.closest('[id^="dropdown-trigger-"]');
+      const dropdownMenuId = 'dropdown-menu-' + trigger.id.split('-').at(-1);
 
-  //   accumulatedScroll += delta;
+      showDropdownById(dropdownMenuId);
+    } else if (ev.target.closest('[id^="dropdown-menu-"] form button')) {
+      hideAllDropdownMenu();
+    } else if (!ev.target.closest('[id^="dropdown-menu-"]')) {
+      hideAllDropdownMenu();
+    }
+  });
 
-  //   if (accumulatedScroll > threshold) {
-  //     // scrolled down enough -> hide
-  //     header.classList.add('-translate-y-full');
-  //     // header.classList.remove('flex');
-  //     // header.classList.add('hidden');
-  //   } else if (accumulatedScroll < -threshold) {
-  //     // scrolled up enough -> show
-  //     header.classList.remove('-translate-y-full');
-  //     // header.classList.remove('hidden');
-  //     // header.classList.add('flex');
+  function showDropdownById(id) {
+    // Hide all dropdown menus if exist
+    hideAllDropdownMenu();
 
-  //     accumulatedScroll = 0; // reset after action
-  //   }
+    // Show the current clicked dropdown menu
+    document.getElementById(id).classList.remove('hidden');
+  }
 
-  //   lastScroll = currentScroll;
-  // });
+  function hideDropdownMenuById(id) {
+    document.getElementById(id).classList.add('hidden');
+  }
+
+  function hideAllDropdownMenu() {
+    document.querySelectorAll('[id^="dropdown-menu-"]').forEach((dm) => {
+      dm.classList.add('hidden');
+    });
+  }
 });

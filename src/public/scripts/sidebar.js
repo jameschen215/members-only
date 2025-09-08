@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const sidebar = document.querySelector('aside');
 
   if (!sidebarToggler || !sidebar) return;
-  console.log('sidebar');
 
   // open sidebar
   sidebarToggler.addEventListener('click', () => {
@@ -28,8 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const menu = document.querySelector('#dropdown-menu');
   const userInfo = document.querySelector('#menu-toggler > div');
   const userAvatar = document.querySelector('#menu-toggler > span');
-
-  console.log(userInfo);
 
   if (dropdownToggler && menu) {
     document.addEventListener('click', (ev) => {

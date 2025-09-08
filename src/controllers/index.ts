@@ -3,6 +3,7 @@ import { matchedData, validationResult } from 'express-validator';
 import { CreateMessageType, MessageWithAuthor } from '../types/message.js';
 import {
   createMessage,
+  deleteMessageById,
   getAllMessages,
   getMessagesByUserId,
 } from '../models/message.js';
@@ -42,6 +43,21 @@ export const postNewMessage: RequestHandler = async (req, res, next) => {
     );
 
     res.status(210).json({ success: true });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteMessage: RequestHandler = async (req, res, next) => {
+  const messageId = Number(req.params.messageId);
+  const returnTo = typeof req.query.from === 'string' ? req.query.from : '/';
+
+  console.log({ returnTo });
+
+  try {
+    await deleteMessageById(messageId);
+
+    res.redirect(returnTo);
   } catch (error) {
     next(error);
   }

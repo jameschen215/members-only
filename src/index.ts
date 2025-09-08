@@ -9,6 +9,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import expressEjsLayouts from 'express-ejs-layouts';
 import multer from 'multer';
+import methodOverride from 'method-override';
 
 import { pool } from './db/pool.js';
 import { runSetup } from './db/setup.js';
@@ -43,6 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(upload.none()); // For forms without file uploads
 app.use(formatDate);
 app.use(setCurrentPath);
+app.use(methodOverride('_method')); // allows ?_method=DELETE
 
 // Session configuration with PostgreSQL store
 app.use(
