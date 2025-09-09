@@ -1,3 +1,5 @@
+import { handleMessageDeletionDropdown } from './lib/utils.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const backButton = document.querySelector('#back-btn-on-profile');
 
@@ -7,4 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
       window.history.back();
     });
   }
+
+  handleMessageDeletionDropdown();
 });

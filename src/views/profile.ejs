@@ -1,6 +1,6 @@
 <div class="min-h-screen border-x border-zinc-200">
   <!-- Back button -->
-  <div class="h-32 bg-zinc-100 py-2 px-1 sm:px-3">
+  <div class="h-32 bg-zinc-50 py-2 px-1 sm:px-3 border-b border-zinc-100">
     <button
       id="back-btn-on-profile"
       type="button"
@@ -39,7 +39,7 @@
         <span class="block size-5 text-emerald-600" aria-hidden="true">
           <%- include('partials/icons/admin') %>
         </span>
-        <span class="text-sm text-emerald-600 font-semibold">Admin user</span>
+        <span class="text-sm text-emerald-600">Admin user</span>
       </div>
       <% } else if (user.role === 'moderator') { %>
       <!-- Club member icon -->
@@ -49,7 +49,7 @@
         <span class="block size-5 text-sky-500" aria-hidden="true">
           <%- include('partials/icons/member') %>
         </span>
-        <span class="text-sm text-sky-500 font-semibold">Club member</span>
+        <span class="text-sm text-sky-500">Club member</span>
       </div>
       <% } else if (user.id === currentUser.id) { %>
       <!-- User icon -->
@@ -81,54 +81,94 @@
   </div>
 
   <!-- Posts -->
-  <div>
-    <% if (locals.messages) { %>
-    <% messages.map(msg => { %>
-    <div class="px-3 sm:px-5 py-5 border-b border-zinc-200 flex gap-2">
-      <!-- Avatar -->
-      <a href="">
-        <span
-          class="flex items-center justify-center size-10 bg-zinc-100 rounded-full text-lg text-zinc-800 font-semibold"
-          aria-hidden="true"
-        >
-          <%= user.first_name.slice(0,1) %><%=
+
+  <% if (locals.messages) { %>
+  <% messages.map(msg => { %>
+  <div class="px-3 sm:px-5 py-5 border-b border-zinc-200 flex gap-2">
+    <!-- Left: Avatar -->
+    <div>
+      <span
+        class="flex items-center justify-center size-10 bg-zinc-100 rounded-full text-lg text-zinc-800 font-semibold"
+        aria-hidden="true"
+      >
+        <%= user.first_name.slice(0,1) %><%=
                     user.last_name.slice(0,1) %>
-        </span>
-      </a>
-
-      <!-- Message title and content -->
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center gap-1.5 mb-1">
-          <p class="font-semibold shrink-0">
-            <%= user.first_name %> <%= user.last_name %>
-          </p>
-
-          <% if (user.role !== 'user') { %>
-          <div class="size-5 text-sky-500">
-            <%- include('partials/icons/member') %>
-          </div>
-          <% } %>
-
-          <p class="text-zinc-500 line-clamp-1">
-            <%= user.username %>
-            <span class="text-zinc-500">&#8901;</span>
-            <%=
-            locals.formatDistanceToNowStrict(msg.created_at) %>
-          </p>
-        </div>
-
-        <p>
-          <%= msg.content %>
-          <span class="text-blue-500">#<%= msg.title %></span>
-        </p>
-      </div>
+      </span>
     </div>
 
-    <% }) %>
-    <% } else { %>
-    <%- include('partials/no-posts') %>
-    <% } %>
+    <!-- Right -->
+    <div class="flex flex-col gap-2 w-full">
+      <!-- Top on the right -->
+      <div class="flex items-center gap-1.5 mb-1">
+        <!-- User's name -->
+        <p class="font-semibold shrink-0">
+          <%= user.first_name %> <%= user.last_name %>
+        </p>
+
+        <!-- User's role -->
+        <% if (user.role !== 'user') { %>
+        <div class="size-5 text-sky-500">
+          <%- include('partials/icons/member') %>
+        </div>
+        <% } %>
+
+        <!-- username and date info -->
+        <p class="text-zinc-500 line-clamp-1">
+          <%= user.username %>
+          <span class="text-zinc-500">&#8901;</span>
+          <%=
+            locals.formatDistanceToNowStrict(msg.created_at) %>
+        </p>
+
+        <!-- up right:  dropdown menu -->
+        <% if (user.id === currentUser.id || currentUser.role === 'admin') { %>
+        <div class="relative ml-auto">
+          <!-- dropdown menu trigger -->
+          <button
+            id="<%= `dropdown-trigger-${msg.id}` %>"
+            type="button"
+            class="hover:bg-zinc-100 rounded-full cursor-pointer"
+          >
+            <span class="text-xl p-1 aspect-square">&#8943;</span>
+          </button>
+
+          <!-- dropdown menu content -->
+          <div
+            id="<%= `dropdown-menu-${msg.id}` %>"
+            class="hidden absolute top-0 right-0 w-full min-w-max px-3 py-5 bg-white shadow-md rounded-md border border-zinc-100"
+          >
+            <form
+              action="<%= `/messages/${msg.id}/delete` %>?_method=DELETE&from=<%= currentPath %>"
+              method="post"
+            >
+              <button
+                type="submit"
+                class="w-full px-2 py-1 rounded-sm hover:bg-zinc-100 flex justify-start items-center gap-2 transition-colors duration-200 cursor-pointer text-red-500"
+              >
+                <span class="block size-4"
+                  ><%- include('partials/icons/trash') %></span
+                >
+                <span>Delete</span>
+              </button>
+            </form>
+          </div>
+        </div>
+        <% } %>
+      </div>
+
+      <p>
+        <%= msg.content %>
+        <span class="text-blue-500">#<%= msg.title %></span>
+      </p>
+    </div>
   </div>
+
+  <!-- end -->
+  <div class="text-center py-8 text-zinc-400">End of feed</div>
+  <% }) %>
+  <% } else { %>
+  <%- include('partials/no-posts') %>
+  <% } %>
 </div>
 
 <script type="module" src="/scripts/profile.js"></script>
