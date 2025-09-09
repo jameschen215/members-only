@@ -25,7 +25,7 @@
     <!-- Name and icon -->
     <div class="flex items-start gap-5">
       <div>
-        <h1 class="text-zinc-800 text-3xl">
+        <h1 class="text-zinc-800 text-3xl font-semibold">
           <%= user.first_name %> <%= user.last_name %>
         </h1>
         <p class="text-zinc-500"><%= user.username %></p>
@@ -34,14 +34,15 @@
       <% if (user.role === 'admin') { %>
       <!-- Admin icon -->
       <div
-        class="flex items-center gap-1 border border-emerald-200 hover:bg-emerald-50 rounded-full px-2 py-1 mt-1"
+        class="flex items-center gap-1 border border-fuchsia-200 hover:bg-fuchsia-50 rounded-full px-2 py-1 mt-1"
       >
-        <span class="block size-5 text-emerald-600" aria-hidden="true">
+        <span class="block size-5 text-fuchsia-500" aria-hidden="true">
           <%- include('partials/icons/admin') %>
         </span>
-        <span class="text-sm text-emerald-600">Admin user</span>
+        <span class="text-sm text-fuchsia-500">Admin user</span>
       </div>
       <% } else if (user.role === 'moderator') { %>
+
       <!-- Club member icon -->
       <div
         class="flex items-center gap-1 border border-sky-200 rounded-full px-2 py-1 hover:bg-sky-50 mt-1"
@@ -106,9 +107,13 @@
         </p>
 
         <!-- User's role -->
-        <% if (user.role !== 'user') { %>
+        <% if (user.role === 'moderator') { %>
         <div class="size-5 text-sky-500">
           <%- include('partials/icons/member') %>
+        </div>
+        <% } else if (user.role === 'admin') { %>
+        <div class="size-5 text-fuchsia-500">
+          <%- include('partials/icons/admin') %>
         </div>
         <% } %>
 
@@ -163,9 +168,9 @@
     </div>
   </div>
 
+  <% }) %>
   <!-- end -->
   <div class="text-center py-8 text-zinc-400">End of feed</div>
-  <% }) %>
   <% } else { %>
   <%- include('partials/no-posts') %>
   <% } %>

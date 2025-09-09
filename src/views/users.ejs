@@ -40,7 +40,7 @@
             </h2>
 
             <% if (user.role === 'admin') { %>
-            <span class="block size-5 text-emerald-500" aria-hidden="true">
+            <span class="block size-5 text-fuchsia-500" aria-hidden="true">
               <%- include('partials/icons/admin') %>
             </span>
             <% } else if (user.role === 'moderator') { %>
@@ -60,6 +60,9 @@
   </a>
 
   <% }) %>
+
+  <!-- end of the list -->
+  <div class="text-center py-8 text-zinc-400">End of feed</div>
   <% } else { %>
   <div class="flex flex-col items-center gap-5 mt-20">
     <span class="block size-30 p-7 text-zinc-300 bg-zinc-100 rounded-full">

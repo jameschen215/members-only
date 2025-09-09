@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import passport from 'passport';
 import { RequestHandler } from 'express';
-import { matchedData, validationResult } from 'express-validator';
+import { matchedData } from 'express-validator';
 
 import { RegisterFormData } from '../types/auth.js';
 import { capitalize } from '../lib/utils.js';
@@ -13,7 +13,6 @@ import {
 } from '../models/user.js';
 import { PublicUserType } from '../types/user.js';
 import { getMessagesByUserId } from '../models/message.js';
-import { currentUser } from '../middlewares/current-user.js';
 
 export const getRegisterForm: RequestHandler = (req, res) => {
   res.render('register', { errors: null, originalInput: null });
@@ -24,27 +23,12 @@ export const getLoginForm: RequestHandler = (req, res) => {
 };
 
 export const registerNewUser: RequestHandler = async (req, res, next) => {
-  // const errors = validationResult(req);
-
-  // console.log('body:', req.body);
-
-  // if (!errors.isEmpty()) {
-  // 	Object.entries(errors.mapped()).forEach((error) => {
-  // 		console.log(error);
-  // 	});
-  // 	return res
-  // 		.status(400)
-  // 		.render('register', { errors: errors.mapped(), data: req.body });
-  // }
-
   const formData = matchedData(req) as RegisterFormData;
   const formattedFormData = {
     ...formData,
     first_name: capitalize(formData.first_name),
     last_name: capitalize(formData.last_name),
   };
-
-  console.log(formattedFormData);
 
   try {
     const saltRound = 10;
