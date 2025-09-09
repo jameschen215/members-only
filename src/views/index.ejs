@@ -11,7 +11,7 @@
       <% if (currentUser.role !== 'user') { %>
       <a href="<%= `/auth/users/${msg.author.id}/profile` %>">
         <span
-          class="flex items-center justify-center size-10 bg-zinc-100 rounded-full text-lg text-zinc-800 font-semibold"
+          class="font-serif flex items-center justify-center size-10 bg-zinc-50 border shadow-sm border-zinc-100 rounded-full text-lg text-zinc-800"
           aria-hidden="true"
         >
           <%= msg.author.first_name.slice(0,1) %><%=
