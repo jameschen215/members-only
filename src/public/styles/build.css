@@ -1256,6 +1256,11 @@
       line-height: var(--tw-leading, var(--text-5xl--line-height));
     }
   }
+  .sm\:opacity-100 {
+    @media (width >= 40rem) {
+      opacity: 100%;
+    }
+  }
   .md\:-mt-20 {
     @media (width >= 48rem) {
       margin-top: calc(var(--spacing) * -20);

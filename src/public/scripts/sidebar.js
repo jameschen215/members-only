@@ -1,32 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
+  /**
+   * Handle sidebar hide and show
+   */
   const sidebarToggler = document.querySelector('#sidebar-toggler');
   const sidebar = document.querySelector('aside');
 
-  if (!sidebarToggler || !sidebar) return;
+  if (!sidebar) return;
 
   // open sidebar
-  sidebarToggler.addEventListener('click', () => {
-    sidebar.classList.remove('-translate-x-full', 'opacity-0');
-  });
+  if (sidebarToggler) {
+    sidebarToggler.addEventListener('click', openSidebar);
+  }
 
   // close sidebar
   document.addEventListener('click', (ev) => {
     // when clicking outside sidebar, close sidebar;
     // and make the toggle button clickable
-    if (!sidebar.contains(ev.target) && !sidebarToggler.contains(ev.target)) {
-      sidebar.classList.add('-translate-x-full', 'opacity-0');
+    if (
+      !sidebar.contains(ev.target) &&
+      sidebarToggler &&
+      !sidebarToggler.contains(ev.target)
+    ) {
+      hideSidebar();
     }
     // when clicking on nav link, close sidebar
     else if (ev.target.closest('nav li')) {
-      sidebar.classList.add('-translate-x-full', 'opacity-0');
+      hideSidebar();
     }
   });
-});
 
-/**
- * --- --- --- MENU --- --- ---
- */
-document.addEventListener('DOMContentLoaded', () => {
+  /**
+   * Handle dropdown menu hide and show
+   */
   const dropdownToggler = document.querySelector('#menu-toggler');
   const menu = document.querySelector('#dropdown-menu');
   const userInfo = document.querySelector('#menu-toggler > div');
@@ -47,12 +52,28 @@ document.addEventListener('DOMContentLoaded', () => {
         // Hide when clicking a menu option
         menu.classList.add('hidden');
         hideUserInfo();
+        hideSidebar();
       } else if (!ev.target.closest('#dropdown-menu')) {
         // Hide when clicking outside
         menu.classList.add('hidden');
         hideUserInfo();
       }
     });
+  }
+
+  /**
+   * Helper functions
+   */
+  function openSidebar() {
+    sidebar.classList.remove(
+      '-translate-x-full',
+      'opacity-0',
+      'sm:opacity-100',
+    );
+  }
+
+  function hideSidebar() {
+    sidebar.classList.add('-translate-x-full', 'opacity-0', 'sm:opacity-100');
   }
 
   function showUserInfo() {
