@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // open sidebar
   sidebarToggler.addEventListener('click', () => {
-    sidebar.classList.remove('-translate-x-full');
+    sidebar.classList.remove('-translate-x-full', 'opacity-0');
   });
 
   // close sidebar
@@ -14,7 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // when clicking outside sidebar, close sidebar;
     // and make the toggle button clickable
     if (!sidebar.contains(ev.target) && !sidebarToggler.contains(ev.target)) {
-      sidebar.classList.add('-translate-x-full');
+      sidebar.classList.add('-translate-x-full', 'opacity-0');
+    }
+    // when clicking on nav link, close sidebar
+    else if (ev.target.closest('nav li')) {
+      sidebar.classList.add('-translate-x-full', 'opacity-0');
     }
   });
 });
