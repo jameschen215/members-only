@@ -1,0 +1,58 @@
+<div id="search-results">
+  <!-- on messages tab -->
+  <% if (tab === 'messages') { %>
+  <% if (messages.length > 0) { %>
+
+  <!-- display messages if found-->
+
+  <% messages.map(msg => { %>
+  <%- include('./post', { msg })  %>
+  <% }) %>
+
+  <% } else if (q === undefined) { %>
+
+  <!-- show something after loading page for the first time -->
+
+  <div class="flex flex-col items-center gap-5 mt-14">
+    <span class="block size-30 p-7 text-zinc-300 bg-zinc-100 rounded-full">
+      <%- include('./icons/message') %>
+    </span>
+    <span class="text-zinc-500 text-lg">Search for posts</span>
+  </div>
+  <% } else { %>
+
+  <!-- show no posts if found nothing -->
+  <div class="flex flex-col items-center gap-5 mt-14">
+    <span class="block size-30 p-7 text-zinc-300 bg-zinc-100 rounded-full">
+      <%- include('./icons/message') %>
+    </span>
+    <span class="text-zinc-500 text-lg">No posts found </span>
+  </div>
+  <% } %>
+
+  <!-- on users tab -->
+
+  <% } else if (tab === 'users') { %>
+  <% if (users.length > 0) { %>
+  <ul>
+    <% users.map(user => { %>
+    <%- include('./user', { user }) %>
+    <% }) %>
+  </ul>
+  <% } else if (q === undefined) { %>
+  <div class="flex flex-col items-center gap-5 mt-14">
+    <span class="block size-30 p-7 text-zinc-300 bg-zinc-100 rounded-full">
+      <%- include('./icons/users') %>
+    </span>
+    <span class="text-zinc-500 text-lg">Search for users</span>
+  </div>
+  <% } else { %>
+  <div class="flex flex-col items-center gap-5 mt-14">
+    <span class="block size-30 p-7 text-zinc-300 bg-zinc-100 rounded-full">
+      <%- include('./icons/users') %>
+    </span>
+    <span class="text-zinc-500 text-lg">No users found</span>
+  </div>
+  <% } %>
+  <% } %>
+</div>

@@ -16,48 +16,7 @@
   <!-- Users list -->
   <% if (locals.users) { %>
   <% users.map(user => { %>
-  <a
-    href="<%= `/auth/users/${user.id}/profile` %>"
-    class="sm:px-5 py-5 border-b border-zinc-200 flex flex-col gap-2 cursor-pointer hover:bg-zinc-50"
-  >
-    <!-- Line 1 -->
-    <div class="flex items-center gap-2">
-      <!-- Avatar -->
-      <div
-        class="font-serif flex items-center justify-center size-12 shadow-sm bg-zinc-50 border border-zinc-100 rounded-full text-lg text-zinc-800"
-        aria-hidden="true"
-      >
-        <%= user.first_name.slice(0,1) %><%=
-                    user.last_name.slice(0,1) %>
-      </div>
-
-      <!-- username -->
-      <div class="flex items-start gap-5">
-        <div>
-          <div class="flex items-center gap-2">
-            <h2 class="text-zinc-950 font-semibold">
-              <%= user.first_name %> <%= user.last_name %>
-            </h2>
-
-            <% if (user.role === 'admin') { %>
-            <span class="block size-5 text-fuchsia-500" aria-hidden="true">
-              <%- include('partials/icons/admin') %>
-            </span>
-            <% } else if (user.role === 'moderator') { %>
-
-            <span class="block size-5 text-sky-500" aria-hidden="true">
-              <%- include('partials/icons/member') %>
-            </span>
-
-            <% } %>
-          </div>
-          <p class="text-zinc-500 text-sm"><%= user.username %></p>
-        </div>
-      </div>
-    </div>
-
-    <!-- line 2: user one-line-bio -->
-  </a>
+  <%- include('partials/user', { user }) %>
 
   <% }) %>
 

@@ -1,15 +1,28 @@
 import { pool } from '../db/pool.js';
 import { MessageType, MessageWithAuthor } from '../types/message.js';
 
-export async function getAllMessages(): Promise<MessageWithAuthor[]> {
-  const { rows } = await pool.query(`
+export async function getAllMessages(
+  q: string = '',
+): Promise<MessageWithAuthor[]> {
+  const queryParams = [];
+  let query = `
     SELECT 
       m.id, m.title, m.content, m.user_id, m.created_at, m.updated_at,
       u.id AS author_id, u.first_name, u.last_name, u.username, u.role, u.created_at AS user_created_at, u.updated_at AS user_updated_at
     FROM messages m
     JOIN users u ON m.user_id = u.id
-    ORDER BY m.created_at DESC;
-    `);
+  `;
+
+  if (q) {
+    query += `
+     WHERE m.title ILIKE $1 OR m.content ILIKE $1
+    `;
+    queryParams.push(`%${q}%`);
+  }
+
+  query += 'ORDER BY m.created_at DESC;';
+
+  const { rows } = await pool.query(query, queryParams);
 
   const messages = rows.map((row) => ({
     id: row.id,
@@ -26,6 +39,7 @@ export async function getAllMessages(): Promise<MessageWithAuthor[]> {
       role: row.role,
       created_at: row.user_created_at,
       updated_at: row.user_updated_at,
+      avatar: row.first_name.charAt(0) + row.last_name.charAt(0),
     },
   })) as MessageWithAuthor[];
 

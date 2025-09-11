@@ -6,7 +6,12 @@ export const currentUser: RequestHandler = (req, res, next) => {
     // Actually remove the password
     const { password, ...userWithoutPassword } = req.user as any;
 
-    res.locals.currentUser = userWithoutPassword;
+    res.locals.currentUser = {
+      ...userWithoutPassword,
+      avatar:
+        userWithoutPassword.first_name.charAt(0) +
+        userWithoutPassword.last_name.charAt(0),
+    };
   }
 
   next(); // always call next()

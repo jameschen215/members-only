@@ -1,0 +1,62 @@
+<div class="min-h-screen border-x border-zinc-200">
+  <!-- search form -->
+  <div class="px-4 sm:px-5 py-2">
+    <form id="search-form" action="/search" class="relative mt-4" novalidate>
+      <div
+        class="size-5 absolute top-1/2 -translate-y-1/2 left-4 text-zinc-400"
+        aria-hidden="true"
+      >
+        <%- include('partials/icons/explore') %>
+      </div>
+      <input
+        id="search"
+        type="text"
+        name="q"
+        value="<%= typeof q !== 'undefined' ? q : '' %>"
+        aria-label="Search input"
+        autocomplete="off"
+        spellcheck="false"
+        class="w-full pl-12 h-12 pr-8 outline-none rounded-xl focus-within:bg-white placeholder:text-zinc-400 placeholder:font-light border border-zinc-100 bg-zinc-50"
+        placeholder="Search..."
+      />
+
+      <button
+        type="button"
+        class="hidden absolute top-1/2 right-4 -translate-y-1/2 size-6 text-zinc-700 cursor-pointer p-0.5 rounded-full hover:bg-zinc-100 transition-colors duration-200"
+      >
+        <%- include('partials/icons/x') %>
+      </button>
+    </form>
+  </div>
+
+  <!-- ============= RESULTS ============= -->
+  <!-- result tabs -->
+  <div class="mt-1">
+    <!-- Tabs -->
+    <div class="flex justify-around border-b border-zinc-200">
+      <a
+        href="/search?q=<%= q %>&tab=messages"
+        class="flex-1 text-center text-zinc-700 hover:bg-zinc-100 transition-all duration-200"
+      >
+        <span
+          class="inline-block py-3 -mb-px border-b-3 <%= tab === 'messages' ? 'border-sky-500 font-medium' : 'border-transparent' %>"
+          >Messages</span
+        >
+      </a>
+      <a
+        href="/search?q=<%= q %>&tab=users"
+        class="flex-1 text-center text-zinc-700 hover:bg-zinc-100 transition-all duration-200"
+      >
+        <span
+          class="inline-block py-3 -mb-px border-b-3 <%= tab === 'users' ? 'border-sky-500 font-medium' : 'border-transparent' %>"
+          >Users</span
+        >
+      </a>
+    </div>
+  </div>
+
+  <!-- tab content (render partial here) -->
+  <%- include('partials/search-results') %>
+</div>
+
+<script type="module" src="/scripts/explore.js"></script>

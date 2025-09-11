@@ -24,4 +24,5 @@ export interface PublicUserType {
   role: UserRole;
   created_at?: Date;
   updated_at?: Date;
+  avatar: string;
 }

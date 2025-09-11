@@ -107,13 +107,22 @@ export const getUserProfile: RequestHandler = async (req, res, next) => {
       const userWithPassword = await getUserById(userId);
       if (userWithPassword) {
         const { password, ...userWithoutPassword } = userWithPassword;
-        user = userWithoutPassword;
+        user = {
+          ...userWithoutPassword,
+          avatar:
+            userWithoutPassword.first_name.charAt(0) +
+            userWithoutPassword.last_name.charAt(0),
+        };
       }
     }
 
     const messages = await getMessagesByUserId(userId);
+    const messagesWithAuthor = messages.map((msg) => ({
+      ...msg,
+      author: user,
+    }));
 
-    res.render('profile', { user, messages });
+    res.render('profile', { user, messages: messagesWithAuthor });
   } catch (error) {
     next(error);
   }

@@ -1,13 +1,30 @@
 import { pool } from '../db/pool.js';
 import { PublicUserType, UserType } from '../types/user.js';
 
-export async function getAllUsers(): Promise<PublicUserType[]> {
-  const { rows }: { rows: PublicUserType[] } = await pool.query(`
+export async function getAllUsers(q: string = ''): Promise<PublicUserType[]> {
+  const queryParams = [];
+  let query = `
     SELECT id, first_name, last_name, username, role, created_at, updated_at
-    FROM users ORDER BY created_at DESC;
-    `);
+    FROM users
+  `;
 
-  return rows;
+  if (q) {
+    query += `
+      WHERE first_name ILIKE $1 OR last_name ILIKE $1 OR username ILIKE $1
+    `;
+    queryParams.push(`%${q}%`);
+  }
+
+  query += 'ORDER BY created_at DESC;';
+
+  const { rows } = await pool.query(query, queryParams);
+
+  const users: PublicUserType[] = rows.map((user) => ({
+    ...user,
+    avatar: user.first_name.charAt(0) + user.last_name.charAt(0),
+  }));
+
+  return users;
 }
 
 export async function getUserByUsername(

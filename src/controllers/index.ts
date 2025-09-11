@@ -5,26 +5,20 @@ import {
   createMessage,
   deleteMessageById,
   getAllMessages,
-  getMessagesByUserId,
 } from '../models/message.js';
+import { PublicUserType } from '../types/user.js';
+import { getAllUsers } from '../models/user.js';
+import { highlightMatches } from '../lib/utils.js';
 
 export const getAllPosts: RequestHandler = async (_req, res, next) => {
   try {
     const messages: MessageWithAuthor[] = await getAllMessages();
-    // const messagesWithAuthor: MessageWithAuthor[] = messages.map((message) => ({
-    //   ...message,
-    //   author: res.locals.currentUser,
-    // }));
 
     res.render('index', { messages });
   } catch (error) {
     next(error);
   }
 };
-
-// export const getPostPage: RequestHandler = (req, res) => {
-//   res.render('create-form', { errors: null, oldInput: null });
-// };
 
 export const postNewMessage: RequestHandler = async (req, res, next) => {
   const errors = validationResult(req);
@@ -61,4 +55,42 @@ export const deleteMessage: RequestHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+export const getExplorePage: RequestHandler = async (req, res, next) => {
+  const { q, tab = 'messages' } = req.query;
+
+  const searchTerm = typeof q === 'string' ? q.trim() : String(q || '').trim();
+  let messages: MessageWithAuthor[] = [];
+  let users: PublicUserType[] = [];
+
+  // Only search if there's a query term
+  if (q && searchTerm) {
+    if (tab === 'messages') {
+      messages = await getAllMessages(searchTerm);
+    } else {
+      users = await getAllUsers(searchTerm);
+    }
+  }
+
+  const highlightedMessages = messages.map((msg) => ({
+    ...msg,
+    title: highlightMatches(msg.title, searchTerm),
+    content: highlightMatches(msg.content, searchTerm),
+  }));
+
+  const highlightedUsers = users.map((user) => ({
+    ...user,
+    avatar: user.first_name.charAt(0) + user.last_name.charAt(0),
+    first_name: highlightMatches(user.first_name, searchTerm),
+    last_name: highlightMatches(user.last_name, searchTerm),
+    username: highlightMatches(user.username, searchTerm),
+  }));
+
+  res.render('explore', {
+    q,
+    tab,
+    messages: highlightedMessages,
+    users: highlightedUsers,
+  });
 };

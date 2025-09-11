@@ -81,3 +81,12 @@ To handle `multipart/form-data`, you need the `multer` middleware:
 - **Multer is specifically designed** for parsing `multipart/form-data`, even without file uploads
 - **`FormData` appears empty in console**: Use `Object.fromEntries(formData.entries())` to inspect its contents
 - **Server-side validation works normally** once multer is configured and `req.body` is properly populated
+
+## EJS Templating
+
+By default, EJS and other templating engines escape HTML characters to prevent XSS attacks. To render raw HTML, such as the `<mark>` tags I used for highlighting, I need to use `<%- variable %>` instead of the standard `<%= variable %>` syntax.
+
+## JavaScript Event Handling
+
+I learned about a common event-timing issue where a `blur` event on an input field can fire before a `click` event on another element. To solve this, I can use the `mousedown` event and call `event.preventDefault()` to prevent the blur from happening, allowing the click event to be executed.
+[Code here](/src/public/scripts/explore.js)
