@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { initializeDatabase } from './init.js';
+import { seedDatabase } from './seed.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,6 +19,9 @@ export async function runSetup() {
   try {
     console.log('Running database initialization...');
     await initializeDatabase();
+
+    console.log('Running database seeding...');
+    await seedDatabase();
 
     // Create flag file to mark setup as complete
     const setupInfo = {
