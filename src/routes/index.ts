@@ -23,3 +23,7 @@ router.delete(
 router.get('/', isAuthenticated, getAllPosts);
 
 router.get('/search', isAuthenticated, getExplorePage);
+
+router.get('/logo', (_req, res) => {
+  res.render('logo');
+});
