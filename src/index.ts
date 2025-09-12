@@ -19,6 +19,8 @@ import { router as authRoutes } from './routes/auth.js';
 import { currentUser } from './middlewares/current-user.js';
 import { formatDate } from './middlewares/format-date.js';
 import { setCurrentPath } from './middlewares/current-path.js';
+import { errorsHandler } from './errors/errors-handler.js';
+import { CustomNotFoundError } from './errors/custom-not-found-error.js';
 
 const app = express();
 const upload = multer(); // handle form data upload from js
@@ -76,6 +78,14 @@ app.use(currentUser);
 app.use('/', indexRoutes);
 
 app.use('/auth', authRoutes);
+
+// handle other routes with not found
+app.use((_req, _res, _next) => {
+  throw new CustomNotFoundError('Page Not Found');
+});
+
+// Error handling
+app.use(errorsHandler);
 
 // Start Server
 async function startServer() {
