@@ -57,7 +57,7 @@ export const deleteMessage: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const getExplorePage: RequestHandler = async (req, res, next) => {
+export const getExplorePage: RequestHandler = async (req, res, _next) => {
   const { q, tab = 'messages' } = req.query;
 
   const searchTerm = typeof q === 'string' ? q.trim() : String(q || '').trim();

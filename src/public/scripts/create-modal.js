@@ -101,11 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleFormInput(form) {
     if (!form) return;
 
-    const firstInput = form.querySelector('input, textarea');
+    // const firstInput = form.querySelector('input, textarea');
     const allFields = form.querySelectorAll('input, textarea');
     const submitBtn = form.querySelector('button[type="submit"]');
-
-    firstInput.focus();
 
     checkFormValidity();
 

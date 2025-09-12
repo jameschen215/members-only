@@ -1,5 +1,8 @@
-<div id="spinner" class="hidden justify-center items-center mt-10 w-full">
-  <span class="block size-8 text-stone-400 animate-spin">
+<div
+  id="<%= `${tag}-spinner` %>"
+  class="<%= tag === 'main' ? 'flex' : 'hidden' %> justify-center items-center mt-20 w-full"
+>
+  <span class="block size-8 text-zinc-700/40 animate-spin">
     <%- include('./icons/spinner') %>
   </span>
 </div>

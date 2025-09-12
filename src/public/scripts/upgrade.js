@@ -21,8 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = form.querySelector('input');
   const submitBtn = form.querySelector('button[type="submit"]');
 
-  input.focus();
-
   validateFromServer(form);
 
   input.addEventListener('input', () => {

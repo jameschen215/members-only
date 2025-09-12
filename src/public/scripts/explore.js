@@ -10,8 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = form.querySelector('input');
   const clearButton = form.querySelector('button');
 
-  searchInput.focus();
-
   // show clear button when mouse down and input has value
   searchInput.addEventListener('mousedown', () => {
     if (searchInput.value.trim() !== '') {
@@ -34,8 +32,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     clearButton.classList.add('hidden');
 
+    // const tabLink = document.querySelector('a[href^="/search"]');
     const query = searchInput.value.trim();
-    loadTab(`/search?q=${query}&tab=messages`);
+
+    document.querySelectorAll('.search-tab').forEach((tabLink) => {
+      const span = tabLink.querySelector('span');
+      if (span.classList.contains('font-medium')) {
+        const tab = tabLink.href.split('tab=')[1] || 'messages';
+        const url = `/search?q=${query}&tab=${tab}`;
+        loadTab(url, tabLink);
+      }
+    });
   });
 
   // Prevent the input from blurring when the clear button is clicked.
@@ -51,20 +58,23 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.focus();
   });
 
-  document.querySelectorAll('a[href*="tab="]').forEach((tabLink) => {
+  document.querySelectorAll('.search-tab').forEach((tabLink) => {
     tabLink.addEventListener('click', async (ev) => {
       ev.preventDefault();
 
-      const url = tabLink.getAttribute('href');
-      loadTab(url);
+      const query = searchInput.value.trim();
+      const tab = tabLink.href.split('tab=')[1];
+      const url = `/search?q=${query}&tab=${tab}`;
+
+      loadTab(url, tabLink);
     });
   });
 
   // handle message deletion
   handleMessageDeletionDropdown();
 
-  async function loadTab(url) {
-    const spinner = document.querySelector('#spinner');
+  async function loadTab(url, tabLink) {
+    const spinner = document.querySelector('#results-spinner');
     const results = document.querySelector('#search-results');
 
     try {
@@ -93,11 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
       results.classList.remove('hidden');
 
       // update active tab styling
-      document.querySelectorAll('a[href*="tab="]').forEach((tl) => {
+      document.querySelectorAll('a[href^="/search"]').forEach((tl) => {
         const span = tl.querySelector('span');
 
         span.classList.remove('border-sky-500', 'font-medium');
         span.classList.add('border-transparent');
+        // console.log(span);
       });
 
       const span = tabLink.querySelector('span');

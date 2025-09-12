@@ -124,7 +124,7 @@ export function removeErrorStyleAndMessage(field) {
   // Remove error styles on field
   field.classList.remove('bg-red-50', 'border-red-500', 'focus:ring-red-50');
   field.classList.add(
-    'border-zinc-200',
+    'border-zinc-100',
     'focus:border-sky-500',
     'focus:ring-sky-50',
   );
@@ -151,7 +151,7 @@ export function showErrorStyleAndMessage(field, message) {
 
   // Add new error style
   field.classList.remove(
-    'border-zinc-200',
+    'border-zinc-100',
     'focus:border-sky-500',
     'focus:ring-sky-50',
   );
