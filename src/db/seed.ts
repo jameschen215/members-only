@@ -88,7 +88,7 @@ export async function seedDatabase() {
         title: 'Welcome!',
         content:
           "Hi everyone, I'm James, the creator of this app. 🚀 Thanks for joining—excited to see what you'll share here! 🙌",
-        user: 'admin@company.com',
+        username: 'admin@company.com',
       },
     ];
 
@@ -98,7 +98,7 @@ export async function seedDatabase() {
         'SELECT id FROM users WHERE username = $1',
         [username],
       );
-      const userId = userRes.rows[0].id;
+      const userId = (userRes.rows[0] as { id: number }).id;
 
       await client.query(
         `
