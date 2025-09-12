@@ -28,9 +28,7 @@
         <% if (msg.author.role === 'moderator') { %>
         <div class="size-5 text-sky-500"><%- include('./icons/member') %></div>
         <% } else if (msg.author.role === 'admin') { %>
-        <div class="size-5 text-fuchsia-500">
-          <%- include('./icons/admin') %>
-        </div>
+        <div class="size-5 text-amber-500"><%- include('./icons/admin') %></div>
         <% } %>
 
         <p class="text-zinc-500 line-clamp-1">

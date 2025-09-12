@@ -29,12 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
     clearButton.classList.add('hidden');
   });
 
-  form.addEventListener('submit', (ev) => {
+  form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
 
     clearButton.classList.add('hidden');
 
-    form.submit();
+    const query = searchInput.value.trim();
+    loadTab(`/search?q=${query}&tab=messages`);
   });
 
   // Prevent the input from blurring when the clear button is clicked.
@@ -54,46 +55,67 @@ document.addEventListener('DOMContentLoaded', () => {
     tabLink.addEventListener('click', async (ev) => {
       ev.preventDefault();
 
-      try {
-        // 1. fetch the full page html
-        const url = tabLink.getAttribute('href');
-
-        const res = await fetch(url);
-
-        if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
-
-        const html = await res.text();
-
-        // 2. parse into a virtual dom
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-
-        // 3. extract the new #search-results from the virtual page
-        const newResults = doc.querySelector('#search-results');
-
-        // 4. replace old results with the new one
-        document.querySelector('#search-results').replaceWith(newResults);
-
-        // update active tab styling
-        document.querySelectorAll('a[href*="tab="]').forEach((tl) => {
-          const span = tl.querySelector('span');
-
-          span.classList.remove('border-sky-500', 'font-medium');
-          span.classList.add('border-transparent');
-        });
-
-        const span = tabLink.querySelector('span');
-
-        span.classList.remove('border-transparent');
-        span.classList.add('border-sky-500', 'font-medium');
-
-        // update url without reloading
-      } catch (error) {
-        console.error('💥 Error:', error);
-      }
+      const url = tabLink.getAttribute('href');
+      loadTab(url);
     });
   });
 
   // handle message deletion
   handleMessageDeletionDropdown();
+
+  async function loadTab(url) {
+    const spinner = document.querySelector('#spinner');
+    const results = document.querySelector('#search-results');
+
+    try {
+      // hide results
+      results.classList.add('hidden');
+
+      // show spinner
+      spinner.classList.remove('hidden');
+      spinner.classList.add('flex');
+
+      const res = await fetch(url);
+
+      if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+
+      const html = await res.text();
+
+      // 2. parse into a virtual dom
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+
+      // 3. extract the new #search-results from the virtual page
+      const newResults = doc.querySelector('#search-results');
+
+      // 4. replace old results with the new one
+      document.querySelector('#search-results').replaceWith(newResults);
+      results.classList.remove('hidden');
+
+      // update active tab styling
+      document.querySelectorAll('a[href*="tab="]').forEach((tl) => {
+        const span = tl.querySelector('span');
+
+        span.classList.remove('border-sky-500', 'font-medium');
+        span.classList.add('border-transparent');
+      });
+
+      const span = tabLink.querySelector('span');
+
+      span.classList.remove('border-transparent');
+      span.classList.add('border-sky-500', 'font-medium');
+
+      // update url without reloading
+      window.history.pushState({}, '', url);
+    } catch (error) {
+      results.innerHTML = `<div class="p-4 text-red-500">Failed to load results.</div>`;
+    } finally {
+      // hide spinner
+      spinner.classList.remove('flex');
+      spinner.classList.add('hidden');
+
+      // show results
+      results.classList.remove('hidden');
+    }
+  }
 });

@@ -33,12 +33,12 @@
       <% if (user.role === 'admin') { %>
       <!-- Admin icon -->
       <div
-        class="flex items-center gap-1 border border-fuchsia-200 hover:bg-fuchsia-50 rounded-full px-2 py-1 mt-1"
+        class="flex items-center gap-1 border border-amber-200 hover:bg-amber-50 rounded-full px-2 py-1 mt-1"
       >
-        <span class="block size-5 text-fuchsia-500" aria-hidden="true">
+        <span class="block size-5 text-amber-500" aria-hidden="true">
           <%- include('partials/icons/admin') %>
         </span>
-        <span class="text-sm text-fuchsia-500">Admin user</span>
+        <span class="text-sm text-amber-500">Admin user</span>
       </div>
       <% } else if (user.role === 'moderator') { %>
 
