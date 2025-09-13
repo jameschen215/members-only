@@ -25,8 +25,6 @@ export const localStrategy = new LocalStrategy(
 
       if (!isMatch) {
         return done(null, false, { message: 'Incorrect password' });
-      } else {
-        console.log('Password not match');
       }
 
       return done(null, user);

@@ -74,6 +74,9 @@ app.use(
     store: new pgSession({
       pool: pool,
       tableName: 'user_sessions',
+      errorLog: (error) => {
+        console.error('Session store error: ', error);
+      },
     }),
   }),
 );
