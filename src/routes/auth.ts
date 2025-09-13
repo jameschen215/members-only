@@ -59,4 +59,9 @@ router.get('/users', requireRole(['admin']), getAllUsersPage);
 
 router.get('/users/:userId/profile', isAuthenticated, getUserProfile);
 
-router.get('/upgrade', isAuthenticated, getUpgradeRoleForm);
+router.get(
+  '/upgrade',
+  isAuthenticated,
+  requireRole(['user']),
+  getUpgradeRoleForm,
+);

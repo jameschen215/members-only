@@ -19,19 +19,6 @@
   </head>
 
   <body>
-    <!-- Global Navigation Spinner -->
-    <div
-      id="nav-spinner"
-      class="fixed inset-0 bg-white bg-opacity-95 hidden justify-center items-center z-50"
-    >
-      <div class="text-center">
-        <span class="block size-12 text-stone-400 animate-spin mx-auto">
-          <%- include('./partials/icons/spinner') %>
-        </span>
-        <p class="mt-4 text-stone-600">Loading...</p>
-      </div>
-    </div>
-
     <div class="flex justify-center">
       <!-- sidebar -->
       <% if (locals.currentUser) { %>

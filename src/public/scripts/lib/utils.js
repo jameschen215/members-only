@@ -199,10 +199,13 @@ export function handleMessageDeletionDropdown() {
       const trigger = ev.target.closest('[id^="dropdown-trigger-"]');
       const dropdownMenuId = 'dropdown-menu-' + trigger.id.split('-').at(-1);
 
+      trigger.setAttribute('aria-expanded', true);
       showDropdownById(dropdownMenuId);
     } else if (ev.target.closest('[id^="dropdown-menu-"] form button')) {
+      trigger.setAttribute('aria-expanded', false);
       hideAllDropdownMenu();
     } else if (!ev.target.closest('[id^="dropdown-menu-"]')) {
+      trigger.setAttribute('aria-expanded', false);
       hideAllDropdownMenu();
     }
   });
@@ -213,10 +216,6 @@ export function handleMessageDeletionDropdown() {
 
     // Show the current clicked dropdown menu
     document.getElementById(id).classList.remove('hidden');
-  }
-
-  function hideDropdownMenuById(id) {
-    document.getElementById(id).classList.add('hidden');
   }
 
   function hideAllDropdownMenu() {

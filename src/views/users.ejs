@@ -6,9 +6,12 @@
     <button
       id="back-btn-on-users"
       type="button"
+      aria-label="Go back to the previous page"
       class="cursor-pointer hover:bg-zinc-200 size-10 p-2 rounded-lg text-zinc-700 transition-colors duration-200"
     >
-      <%- include('partials/icons/arrow-left') %>
+      <span aria-hidden="true">
+        <%- include('partials/icons/arrow-left') %>
+      </span>
     </button>
     <h1 class="text-zinc-950 text-3xl">All users</h1>
   </header>
@@ -17,14 +20,16 @@
   <% if (locals.users) { %>
   <% users.map(user => { %>
   <%- include('partials/user', { user }) %>
-
   <% }) %>
 
   <!-- end of the list -->
   <div class="text-center py-8 text-zinc-400">End of feed</div>
   <% } else { %>
   <div class="flex flex-col items-center gap-5 mt-20">
-    <span class="block size-30 p-7 text-zinc-300 bg-zinc-100 rounded-full">
+    <span
+      class="block size-30 p-7 text-zinc-300 bg-zinc-100 rounded-full"
+      aria-hidden="true"
+    >
       <%- include('partials/icons/users') %>
     </span>
     <span class="text-zinc-500 text-lg">No users yet.</span>

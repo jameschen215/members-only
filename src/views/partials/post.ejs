@@ -1,7 +1,10 @@
 <div class="px-3 sm:px-5 py-5 border-b border-zinc-200 flex gap-2">
   <!-- Avatar - Left side -->
   <% if (currentUser.role !== 'user') { %>
-  <a href="<%= `/auth/users/${msg.author.id}/profile` %>">
+  <a
+    href="<%= `/auth/users/${msg.author.id}/profile` %>"
+    aria-label="View <%= msg.author.first_name %>'s profile"
+  >
     <span
       class="font-serif flex items-center justify-center size-10 bg-zinc-50 border shadow-sm border-zinc-100 rounded-full text-lg text-zinc-800"
       aria-hidden="true"
@@ -20,22 +23,27 @@
       <a
         href="<%= `/auth/users/${msg.author.id}/profile` %>"
         class="flex items-center gap-1.5 mb-1"
+        aria-label="View <%= msg.author.first_name %>'s profile"
       >
         <p class="font-semibold shrink-0">
           <%= msg.author.first_name %> <%= msg.author.last_name %>
         </p>
 
         <% if (msg.author.role === 'moderator') { %>
-        <div class="size-5 text-sky-500"><%- include('./icons/member') %></div>
+        <div class="size-5 text-sky-500" role="img" aria-label="Club member">
+          <%- include('./icons/member') %>
+        </div>
         <% } else if (msg.author.role === 'admin') { %>
-        <div class="size-5 text-amber-500"><%- include('./icons/admin') %></div>
+        <div class="size-5 text-amber-500" role="img" aria-label="Admin user">
+          <%- include('./icons/admin') %>
+        </div>
         <% } %>
 
         <p class="text-zinc-500 line-clamp-1">
           <%= msg.author.username %>
-          <span class="text-zinc-500">&#8901;</span>
-          <%=
-                locals.formatDistanceToNowStrict(msg.created_at) %>
+          <span class="text-zinc-500" aria-hidden="true">&#8901;</span>
+          <span class="sr-only">Posted</span>
+          <%= locals.formatDistanceToNowStrict(msg.created_at) %>
         </p>
       </a>
 
@@ -47,8 +55,13 @@
           id="<%= `dropdown-trigger-${msg.id}` %>"
           type="button"
           class="hover:bg-zinc-100 rounded-full cursor-pointer"
+          aria-label="Options for this message"
+          aria-expanded="false"
+          aria-controls="<%= `dropdown-menu-${msg.id}` %>"
         >
-          <span class="text-xl p-1 aspect-square">&#8943;</span>
+          <span class="text-xl p-1 aspect-square" aria-hidden="true">
+            &#8943;
+          </span>
         </button>
 
         <!-- dropdown menu content -->
@@ -62,9 +75,12 @@
           >
             <button
               type="submit"
+              aria-label="Delete this message"
               class="w-full px-2 py-1 rounded-sm hover:bg-zinc-100 flex justify-start items-center gap-2 transition-colors duration-200 cursor-pointer text-red-500"
             >
-              <span class="block size-4"><%- include('./icons/trash') %></span>
+              <span class="block size-4" aria-hidden="true">
+                <%- include('./icons/trash') %>
+              </span>
               <span>Delete</span>
             </button>
           </form>
@@ -73,7 +89,8 @@
       <% } %>
     </div>
     <% } %>
-    <!-- down -->
+
+    <!-- down: message -->
     <div class="flex flex-col gap-2">
       <p>
         <%- msg.content %>

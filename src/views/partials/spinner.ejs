@@ -1,8 +1,10 @@
 <div
   id="<%= `${tag}-spinner` %>"
   class="<%= tag === 'main' ? 'flex' : 'hidden' %> justify-center items-center mt-20 w-full"
+  role="status"
+  aria-live="polite"
 >
-  <span class="block size-8 text-zinc-700/40 animate-spin">
+  <span class="block size-8 text-zinc-700/40 animate-spin" aria-label="Loading">
     <%- include('./icons/spinner') %>
   </span>
 </div>

@@ -1,6 +1,7 @@
 <a
   href="<%= `/auth/users/${user.id}/profile` %>"
   class="sm:px-5 py-5 border-b border-zinc-200 flex flex-col gap-2 cursor-pointer hover:bg-zinc-50"
+  aria-label="View <%= user.first_name %> <%= user.last_name %> profile, <%= user.role %>"
 >
   <!-- Line 1 -->
   <div class="flex items-center gap-2">
@@ -21,12 +22,22 @@
           </h2>
 
           <% if (user.role === 'admin') { %>
-          <span class="block size-5 text-amber-500" aria-hidden="true">
+          <span
+            class="block size-5 text-amber-500"
+            aria-hidden="true"
+            role="img"
+            aria-label="Admin user"
+          >
             <%- include('./icons/admin') %>
           </span>
           <% } else if (user.role === 'moderator') { %>
 
-          <span class="block size-5 text-sky-500" aria-hidden="true">
+          <span
+            class="block size-5 text-sky-500"
+            aria-hidden="true"
+            role="img"
+            aria-label="Club member"
+          >
             <%- include('./icons/member') %>
           </span>
 
@@ -36,6 +47,4 @@
       </div>
     </div>
   </div>
-
-  <!-- line 2: user one-line-bio -->
 </a>

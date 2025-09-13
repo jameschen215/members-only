@@ -20,6 +20,9 @@ const LINKS = [
       id="menu-toggler"
       type="button"
       class="lg:w-full pr-0 lg:pr-3 flex items-center justify-center lg:text-start mt-8 group hover:bg-zinc-50 rounded-full cursor-pointer"
+      aria-label="Open user options menu for <%= locals.currentUser.first_name %>"
+      aria-expanded="false"
+      aria-controls="dropdown-menu"
     >
       <!-- image -->
       <span
@@ -42,28 +45,36 @@ const LINKS = [
           >
         </div>
 
-        <div class="text-xl flex items-center justify-center">&#8943;</div>
+        <div
+          aria-hidden="true"
+          class="text-xl flex items-center justify-center"
+        >
+          &#8943;
+        </div>
       </div>
     </button>
 
     <!-- dropdown menu -->
     <ul
       id="dropdown-menu"
+      role="menu"
       class="hidden absolute w-full min-w-max p-3 bottom-0 left-0 translate-y-[calc(100%+8px)] bg-white border border-zinc-100 shadow-md rounded-md"
     >
-      <li class="block">
+      <li role="none" class="block">
         <a
           href="<%= `/auth/users/${currentUser.id}/profile` %>"
+          role="menuitem"
           class="flex items-center gap-4 w-full p-2 rounded-sm hover:bg-zinc-100 transition-colors duration-200"
         >
           <span class="block size-5"><%- include('./icons/profile') %></span>
           <span>Go to profile</span>
         </a>
       </li>
-      <li class="block">
+      <li role="none" class="block">
         <form action="/auth/logout" method="post">
           <button
             type="submit"
+            role="menuitem"
             class="w-full p-2 rounded-sm hover:bg-zinc-100 flex justify-start items-center gap-4 transition-colors duration-200 cursor-pointer"
           >
             <span class="block size-5"><%- include('./icons/logout') %></span>
@@ -82,6 +93,7 @@ const LINKS = [
         <a
           href="<%= link.href  %>"
           class="<%= currentPath === link.href ? 'bg-zinc-50 font-semibold' : '' %> flex items-center sm:justify-center lg:justify-start gap-2 text-lg w-full h-full px-2 py-2 rounded-md hover:bg-zinc-50 focus:bg-zinc-50 transition-all duration-200"
+          aria-current="<%= currentPath === link.href ? 'page' : null %>"
         >
           <span class="inline-block size-6 text-zinc-700" aria-hidden="true">
             <%- include(link.icon) %>
@@ -98,7 +110,8 @@ const LINKS = [
     <button
       id="post-trigger"
       type="button"
-      class="mt-10 bg-sky-500 py-2 px-5 sm:px-2 lg:px-5 outline-none text-white text-sm font-semibold rounded-full cursor-pointer transition-colors duration-200 hover:bg-sky-400 focus:ring-2 focus:ring-offset-1 focus:ring-sky-400 flex items-center justify-center gap-1"
+      class="mt-10 bg-sky-500 py-2 px-5 sm:px-2 lg:px-5 outline-none text-white text-sm font-semibold rounded-full cursor-pointer transition-colors duration-200 hover:bg-sky-400 focus:ring-2 focus:ring-offset-1 focus:ring-zinc-400 flex items-center justify-center gap-1"
+      aria-label="Create new post"
     >
       <span class="inline-block size-5" aria-hidden="true">
         <%- include('./icons/post') %>

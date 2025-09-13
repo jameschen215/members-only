@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
    * Helper functions
    */
   function openSidebar() {
+    sidebarToggler.setAttribute('aria-expanded', true);
     sidebar.classList.remove(
       '-translate-x-full',
       'opacity-0',
@@ -73,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function hideSidebar() {
+    sidebarToggler.setAttribute('aria-expanded', false);
     sidebar.classList.add('-translate-x-full', 'opacity-0', 'sm:opacity-100');
   }
 
