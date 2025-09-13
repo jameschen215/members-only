@@ -5,19 +5,15 @@ import { CustomBadRequestError } from '../errors/custom-bad-request-error.js';
 import { CustomForbiddenError } from '../errors/custom-forbidden-error.js';
 
 export const isAuthenticated: RequestHandler = (req, res, next) => {
-  if (req.isAuthenticated()) return next();
-
-  console.log('Not authenticated');
-
-  // throw new CustomUnauthorizedError(
-  //   'You have to log in to access this resource',
-  // );
-  res.status(401).redirect('/auth/landing-page');
-
-  // res.status(401).json({ message: 'Unauthorized' });
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    console.log('Not authenticated');
+    res.status(401).redirect('/auth/landing-page');
+  }
 };
 
-export const isNotAuthenticated: RequestHandler = (req, res, next) => {
+export const isNotAuthenticated: RequestHandler = (req, _res, next) => {
   if (!req.isAuthenticated()) return next();
 
   // res.status(400).json({ message: 'You are already logged in' });
