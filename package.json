@@ -8,9 +8,11 @@
     "dev": "concurrently \"npm run build:css\" \"tsx --watch src/index.ts\"",
     "build:css": "postcss ./src/public/styles/styles.css -o ./src/public/styles/build.css --watch",
     "build:css:once": "postcss ./src/public/styles/styles.css -o ./src/public/styles/build.css ",
+    "build": "tsc && npm run build:css:once && cp -r src/views dist/src/views && cp -r src/public dist/src/public",
+    "start": "npm run db:setup && node dist/src/index.js",
+    "build:start": "npm run build && npm run start",
     "db:setup": "npx tsx src/db/setup.ts",
-    "db:reset": "rm -f src/db/.db-setup-complete && npm run db:setup",
-    "start": "node dist/src/index.js"
+    "db:reset": "rm -f src/db/.db-setup-complete && npm run db:setup"
   },
   "repository": {
     "type": "git",
@@ -25,6 +27,7 @@
   "homepage": "https://github.com/jameschen215/members-only#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "compression": "^1.8.1",
     "connect-pg-simple": "^10.0.0",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
@@ -38,6 +41,7 @@
     "method-override": "^3.0.0",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
+    "node-cache": "^5.1.2",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pg": "^8.16.3"
@@ -46,6 +50,7 @@
     "@tailwindcss/postcss": "^4.1.12",
     "@tsconfig/node22": "^22.0.2",
     "@types/bcrypt": "^6.0.0",
+    "@types/compression": "^1.8.1",
     "@types/connect-pg-simple": "^7.0.3",
     "@types/cors": "^2.8.19",
     "@types/ejs": "^3.1.5",

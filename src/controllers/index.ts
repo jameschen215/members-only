@@ -1,6 +1,8 @@
+import { cache, invalidatePostCaches } from '../lib/cache.js';
 import { RequestHandler } from 'express';
 import { matchedData, validationResult } from 'express-validator';
 import { CreateMessageType, MessageWithAuthor } from '../types/message.js';
+
 import {
   createMessage,
   deleteMessageById,
@@ -11,8 +13,19 @@ import { getAllUsers } from '../models/user.js';
 import { highlightMatches } from '../lib/utils.js';
 
 export const getAllPosts: RequestHandler = async (_req, res, next) => {
+  const cacheKey = 'all_posts';
+  const cachedMessages = cache.get(cacheKey);
+
+  if (cachedMessages) {
+    return res.render('index', {
+      messages: cachedMessages as MessageWithAuthor[],
+    });
+  }
+
   try {
-    const messages: MessageWithAuthor[] = await getAllMessages();
+    const messages = await getAllMessages();
+
+    cache.set(cacheKey, messages);
 
     res.render('index', { messages });
   } catch (error) {
@@ -36,6 +49,9 @@ export const postNewMessage: RequestHandler = async (req, res, next) => {
       res.locals.currentUser.id,
     );
 
+    // Invalidate book cache
+    invalidatePostCaches(res.locals.currentUser.id);
+
     res.status(210).json({ success: true });
   } catch (error) {
     next(error);
@@ -49,7 +65,10 @@ export const deleteMessage: RequestHandler = async (req, res, next) => {
   console.log({ returnTo });
 
   try {
-    await deleteMessageById(messageId);
+    const message = await deleteMessageById(messageId);
+
+    // Invalidate book cache
+    invalidatePostCaches(message.user_id);
 
     res.redirect(returnTo);
   } catch (error) {

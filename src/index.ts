@@ -1,25 +1,26 @@
 import 'dotenv/config';
-import express from 'express';
-import session from 'express-session';
-import connectPgSimple from 'connect-pg-simple';
 import cors from 'cors';
-import helmet from 'helmet';
-import morgan from 'morgan';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import expressEjsLayouts from 'express-ejs-layouts';
 import multer from 'multer';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import express from 'express';
+import { fileURLToPath } from 'url';
+import session from 'express-session';
+import compression from 'compression';
 import methodOverride from 'method-override';
+import connectPgSimple from 'connect-pg-simple';
+import expressEjsLayouts from 'express-ejs-layouts';
 
 import { pool } from './db/pool.js';
 import { runSetup } from './db/setup.js';
 import { configurePassport } from './auth/passport.js';
-import { router as indexRoutes } from './routes/index.js';
 import { router as authRoutes } from './routes/auth.js';
-import { currentUser } from './middlewares/current-user.js';
+import { router as indexRoutes } from './routes/index.js';
 import { formatDate } from './middlewares/format-date.js';
-import { setCurrentPath } from './middlewares/current-path.js';
 import { errorsHandler } from './errors/errors-handler.js';
+import { currentUser } from './middlewares/current-user.js';
+import { setCurrentPath } from './middlewares/current-path.js';
 import { CustomNotFoundError } from './errors/custom-not-found-error.js';
 
 const app = express();
@@ -34,16 +35,35 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(expressEjsLayouts);
 app.set('layout', 'layout');
+app.set('view options', {
+  rmWhitespace: true, // Remove whitespace
+  cache: process.env.NODE_ENV === 'production',
+});
+
+// Enable view caching in production to improve performance
+if (process.env.NODE_ENV === 'production') {
+  app.set('view cache', true);
+}
 
 // Middlewares
 app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
+app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+// HTTP caching headers for static content and cacheable pages
+// app.use(
+//   '/static',
+//   express.static(path.join(__dirname, 'public'), {
+//     maxAge: '1d', // cache for 1 day
+//     etag: true, // still allow validation
+//   }),
+// );
 
-app.use(upload.none()); // For forms without file uploads
+// Use a middleware created by Multer that only accepts text fields, not files.
+app.use(upload.none());
 app.use(formatDate);
 app.use(setCurrentPath);
 app.use(methodOverride('_method')); // allows ?_method=DELETE

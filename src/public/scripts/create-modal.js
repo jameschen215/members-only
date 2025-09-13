@@ -51,7 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else {
       closeModal();
-      location.reload();
+
+      if (location.pathname === '/' || location.pathname.includes('profile')) {
+        location.reload();
+      } else {
+        location.href = '/';
+      }
     }
   });
 

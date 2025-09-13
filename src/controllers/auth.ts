@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import passport from 'passport';
+import { cache, invalidateUserCaches } from '../lib/cache.js';
 import { RequestHandler } from 'express';
 import { matchedData } from 'express-validator';
 
@@ -37,12 +38,15 @@ export const registerNewUser: RequestHandler = async (req, res, next) => {
       saltRound,
     );
 
-    await createUser(
+    const newUser = await createUser(
       formattedFormData.first_name,
       formattedFormData.last_name,
       formattedFormData.username,
       hashedPassword,
     );
+
+    // Invalidate book cache
+    invalidateUserCaches(newUser.id);
 
     res.status(201).redirect('/auth/login');
   } catch (error) {
@@ -100,6 +104,13 @@ export const getUserProfile: RequestHandler = async (req, res, next) => {
   const userId = Number(req.params.userId);
   let user: PublicUserType | undefined = undefined;
 
+  const cacheKey = `profile_${userId}`;
+  const profile = cache.get(cacheKey);
+
+  if (profile) {
+    return res.render('profile', profile);
+  }
+
   try {
     if (res.locals.currentUser.id === userId) {
       user = res.locals.currentUser;
@@ -122,6 +133,8 @@ export const getUserProfile: RequestHandler = async (req, res, next) => {
       author: user,
     }));
 
+    cache.set(cacheKey, { user, messages: messagesWithAuthor });
+
     res.render('profile', { user, messages: messagesWithAuthor });
   } catch (error) {
     next(error);
@@ -133,8 +146,17 @@ export const getLandingPage: RequestHandler = (_req, res) => {
 };
 
 export const getAllUsersPage: RequestHandler = async (_req, res, next) => {
+  const cacheKey = 'all_users';
+  const cachedUsers = cache.get(cacheKey);
+
+  if (cachedUsers) {
+    return res.render('users', { users: cachedUsers as PublicUserType[] });
+  }
+
   try {
     const users = await getAllUsers();
+
+    cache.set(cacheKey, users);
 
     res.render('users', { users });
   } catch (error) {
@@ -148,7 +170,12 @@ export const getUpgradeRoleForm: RequestHandler = (req, res, next) => {
 
 export const upgradeUser: RequestHandler = async (req, res, next) => {
   try {
-    await upgradeUserRole(res.locals.currentUser);
+    const user = await upgradeUserRole(res.locals.currentUser);
+
+    if (user) {
+      // Invalidate book cache
+      invalidateUserCaches(user.id);
+    }
 
     res.redirect(`/auth/users/${res.locals.currentUser.id}/profile`);
   } catch (error) {
