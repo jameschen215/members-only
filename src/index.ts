@@ -53,14 +53,6 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-// HTTP caching headers for static content and cacheable pages
-// app.use(
-//   '/static',
-//   express.static(path.join(__dirname, 'public'), {
-//     maxAge: '1d', // cache for 1 day
-//     etag: true, // still allow validation
-//   }),
-// );
 
 // Use a middleware created by Multer that only accepts text fields, not files.
 app.use(upload.none());

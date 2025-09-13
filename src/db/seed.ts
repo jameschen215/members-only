@@ -14,24 +14,24 @@ export async function seedDatabase() {
     await client.query('BEGIN');
     // 1. Insert users
     const users = [
-      // {
-      //   firstName: 'Alice',
-      //   lastName: 'Johnson',
-      //   username: 'alicejohnson@company.com',
-      //   password: '123456',
-      // },
-      // {
-      //   firstName: 'Bob',
-      //   lastName: 'Smith',
-      //   username: 'bobsmith@company.com',
-      //   password: '123456',
-      // },
-      // {
-      //   firstName: 'Charlie',
-      //   lastName: 'Brown',
-      //   username: 'charliebrown@company.com',
-      //   password: '123456',
-      // },
+      {
+        firstName: 'Alice',
+        lastName: 'Johnson',
+        username: 'alicejohnson@company.com',
+        password: '123456',
+      },
+      {
+        firstName: 'Bob',
+        lastName: 'Smith',
+        username: 'bobsmith@company.com',
+        password: '123456',
+      },
+      {
+        firstName: 'Charlie',
+        lastName: 'Brown',
+        username: 'charliebrown@company.com',
+        password: '123456',
+      },
       {
         firstName: 'James',
         lastName: 'Chen',
@@ -56,34 +56,34 @@ export async function seedDatabase() {
 
     // insert posts
     const posts = [
-      // {
-      //   title: 'First Post',
-      //   content: 'Excited to be part of this members-only app! 🎉',
-      //   username: 'alicejohnson@company.com',
-      // },
-      // {
-      //   title: 'Hello World',
-      //   content:
-      //     'This is my very first post here. Looking forward to meeting you all. 👋',
-      //   username: 'bobsmith@company.com',
-      // },
-      // {
-      //   title: 'Weekend Plans',
-      //   content: 'Anyone up for a hiking trip this weekend? 🥾🌲',
-      //   username: 'charliebrown@company.com',
-      // },
-      // {
-      //   title: 'New Book Recommendation',
-      //   content:
-      //     "Just finished reading an amazing novel. 📚✨ Happy to share details if anyone's interested!",
-      //   username: 'alicejohnson@company.com',
-      // },
-      // {
-      //   title: 'Coding Tips',
-      //   content:
-      //     "Here's a neat trick I learned in JavaScript today. 💻🔧 Ask me if you want details.",
-      //   username: 'bobsmith@company.com',
-      // },
+      {
+        title: 'First Post',
+        content: 'Excited to be part of this members-only app! 🎉',
+        username: 'alicejohnson@company.com',
+      },
+      {
+        title: 'Hello World',
+        content:
+          'This is my very first post here. Looking forward to meeting you all. 👋',
+        username: 'bobsmith@company.com',
+      },
+      {
+        title: 'Weekend Plans',
+        content: 'Anyone up for a hiking trip this weekend? 🥾🌲',
+        username: 'charliebrown@company.com',
+      },
+      {
+        title: 'New Book Recommendation',
+        content:
+          "Just finished reading an amazing novel. 📚✨ Happy to share details if anyone's interested!",
+        username: 'alicejohnson@company.com',
+      },
+      {
+        title: 'Coding Tips',
+        content:
+          "Here's a neat trick I learned in JavaScript today. 💻🔧 Ask me if you want details.",
+        username: 'bobsmith@company.com',
+      },
       {
         title: 'Welcome!',
         content:

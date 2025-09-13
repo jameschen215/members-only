@@ -1,8 +1,8 @@
-import "dotenv/config";
-import { Pool } from "pg";
+import 'dotenv/config';
+import { Pool } from 'pg';
 
 export const config =
-  process.env.NODE_ENV === "production"
+  process.env.NODE_ENV === 'production'
     ? {
         connectionString: process.env.DATABASE_URL,
         ssl: { rejectUnauthorized: false },
