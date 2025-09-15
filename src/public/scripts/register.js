@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!form) return;
 
   const submitButton = form.querySelector('button[type="submit"]');
+  const loginLink = form.querySelector('p a');
 
   // Server side validation
   validateFromServer(form);
@@ -34,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isValid) {
       submitButton.disabled = true;
       submitButton.textContent = 'Registering...';
+      loginLink.disabled = true;
       // Manually submit only if valid
       form.submit();
     } else {
