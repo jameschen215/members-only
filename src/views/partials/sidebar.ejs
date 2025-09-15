@@ -62,7 +62,7 @@ const LINKS = [
     >
       <li role="none" class="block">
         <a
-          href="<%= `/auth/users/${currentUser.id}/profile` %>"
+          href="<%= `/auth/users/${currentUser.id}/profile?from=${locals.currentPath}` %>"
           role="menuitem"
           class="flex items-center gap-4 w-full p-2 rounded-sm hover:bg-zinc-100 transition-colors duration-200"
         >
