@@ -53,7 +53,7 @@
       </a>
 
       <!-- up right:  dropdown menu -->
-      <% if (currentUser.role === 'admin') { %>
+      <% if (currentUser.role === 'admin' || currentUser.id === user.id) { %>
       <div class="relative">
         <!-- dropdown menu trigger -->
         <button

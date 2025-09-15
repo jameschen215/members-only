@@ -202,10 +202,8 @@ export function handleMessageDeletionDropdown() {
       trigger.setAttribute('aria-expanded', true);
       showDropdownById(dropdownMenuId);
     } else if (ev.target.closest('[id^="dropdown-menu-"] form button')) {
-      trigger.setAttribute('aria-expanded', false);
       hideAllDropdownMenu();
     } else if (!ev.target.closest('[id^="dropdown-menu-"]')) {
-      trigger.setAttribute('aria-expanded', false);
       hideAllDropdownMenu();
     }
   });
@@ -219,8 +217,13 @@ export function handleMessageDeletionDropdown() {
   }
 
   function hideAllDropdownMenu() {
+    document.querySelectorAll('[id^="dropdown-trigger-"]').forEach((btn) => {
+      btn.setAttribute('aria-expanded', false);
+    });
+
     document.querySelectorAll('[id^="dropdown-menu-"]').forEach((dm) => {
       dm.classList.add('hidden');
+      console.log('hided');
     });
   }
 }
