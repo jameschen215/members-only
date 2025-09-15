@@ -30,7 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isValid) {
       submitButton.disabled = true;
       submitButton.textContent = 'Logging in...';
-      registerLink.disabled = true;
+      registerLink.classList.add(
+        'pointer-events-none',
+        'text-zinc-400',
+        'cursor-default',
+      );
       form.submit(); // manually submit only if valid
     } else {
       focusOnFirstErrorField(form);
