@@ -8,11 +8,21 @@ import {
   deleteMessageById,
   getAllMessages,
 } from '../models/message.js';
-import { PublicUserType } from '../types/user.js';
+import { PublicUserType, UserType } from '../types/user.js';
 import { getAllUsers } from '../models/user.js';
 import { highlightMatches } from '../lib/utils.js';
 
-export const getAllPosts: RequestHandler = async (_req, res, next) => {
+export const getAllPosts: RequestHandler = async (req, res, next) => {
+  console.log('=== HOME PAGE ACCESS ===');
+  console.log('Session ID:', req.sessionID);
+  console.log('Session passport:', (req.session as any)?.passport);
+  console.log(
+    'req.user:',
+    req.user ? `User ID: ${(req.user as UserType).id}` : 'undefined',
+  );
+  console.log('isAuthenticated():', req.isAuthenticated());
+  console.log('=======================');
+
   const cacheKey = 'all_posts';
   const cachedMessages = cache.get(cacheKey);
 
