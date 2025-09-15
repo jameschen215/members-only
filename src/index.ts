@@ -80,13 +80,16 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === 'production',
+      // secure: process.env.NODE_ENV === 'production',
+      secure: false, // for debug
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24, // 1 day
+      sameSite: 'lax',
     },
     store: new pgSession({
       pool: pool,
       tableName: 'user_sessions',
+      createTableIfMissing: true,
       errorLog: (error) => {
         console.error('Session store error: ', error);
       },
@@ -194,6 +197,47 @@ app.use((req, res, next) => {
     req.session ? Object.keys(req.session) : 'no session',
   );
   console.log('=====================');
+  next();
+});
+
+app.use((req, res, next) => {
+  console.log('=== REQUEST DETAILS ===');
+  console.log('Path:', req.path);
+  console.log('Method:', req.method);
+  console.log('Session ID from request:', req.sessionID);
+  console.log('All cookies:', req.headers.cookie);
+  console.log(
+    'Connect.sid cookie:',
+    req.cookies ? req.cookies['connect.sid'] : 'no cookies',
+  );
+  console.log('Session data exists:', !!req.session);
+  console.log('=====================');
+  next();
+});
+
+// Add this middleware to log response headers
+app.use((req, res, next) => {
+  const originalSend = res.send;
+  const originalRedirect = res.redirect;
+
+  res.send = function (data) {
+    if (req.path === '/auth/login') {
+      console.log('=== LOGIN RESPONSE HEADERS ===');
+      console.log('Set-Cookie:', res.getHeaders()['set-cookie']);
+      console.log('==============================');
+    }
+    return originalSend.call(this, data);
+  };
+
+  res.redirect = function (url) {
+    if (req.path === '/auth/login') {
+      console.log('=== REDIRECT RESPONSE HEADERS ===');
+      console.log('Set-Cookie:', res.getHeaders()['set-cookie']);
+      console.log('Location:', url);
+      console.log('=================================');
+    }
+  };
+
   next();
 });
 // -------------------- debug test --------------------
