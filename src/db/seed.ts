@@ -36,7 +36,7 @@ export async function seedDatabase() {
         firstName: 'James',
         lastName: 'Chen',
         username: 'admin@company.com',
-        password: '123456',
+        password: '19342901',
       },
     ];
 
