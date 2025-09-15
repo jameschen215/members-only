@@ -22,19 +22,6 @@ import { errorsHandler } from './errors/errors-handler.js';
 import { currentUser } from './middlewares/current-user.js';
 import { setCurrentPath } from './middlewares/current-path.js';
 import { CustomNotFoundError } from './errors/custom-not-found-error.js';
-import { UserType } from './types/user.js';
-
-// ------------------ debug ------------------
-import 'express-session';
-
-declare module 'express-session' {
-  interface SessionData {
-    passport?: {
-      user: any;
-    };
-  }
-}
-// ------------------ debug ------------------
 
 const app = express();
 const upload = multer(); // handle form data upload from js

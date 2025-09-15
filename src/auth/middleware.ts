@@ -5,26 +5,14 @@ import { CustomBadRequestError } from '../errors/custom-bad-request-error.js';
 import { CustomForbiddenError } from '../errors/custom-forbidden-error.js';
 
 export const isAuthenticated: RequestHandler = (req, res, next) => {
-  console.log('=== isAuthenticated CHECK ===');
-  console.log('req.isAuthenticated():', req.isAuthenticated());
-  console.log('req.user exists:', !!req.user);
-  console.log('Session passport:', (req.session as any)?.passport);
+  if (req.isAuthenticated()) return next();
 
-  if (req.isAuthenticated()) {
-    console.log('Authentication check passed');
-
-    return next();
-  }
-
-  console.log('Authentication check failed - redirecting to login');
-  console.log('=============================');
-  res.redirect('/auth/login');
+  res.status(401).redirect('/auth/landing-page');
 };
 
 export const isNotAuthenticated: RequestHandler = (req, _res, next) => {
   if (!req.isAuthenticated()) return next();
 
-  // res.status(400).json({ message: 'You are already logged in' });
   throw new CustomBadRequestError('You are already logged in');
 };
 

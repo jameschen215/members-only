@@ -13,16 +13,6 @@ import { getAllUsers } from '../models/user.js';
 import { highlightMatches } from '../lib/utils.js';
 
 export const getAllPosts: RequestHandler = async (req, res, next) => {
-  console.log('=== HOME PAGE ACCESS ===');
-  console.log('Session ID:', req.sessionID);
-  console.log('Session passport:', (req.session as any)?.passport);
-  console.log(
-    'req.user:',
-    req.user ? `User ID: ${(req.user as UserType).id}` : 'undefined',
-  );
-  console.log('isAuthenticated():', req.isAuthenticated());
-  console.log('=======================');
-
   const cacheKey = 'all_posts';
   const cachedMessages = cache.get(cacheKey);
 
@@ -71,8 +61,6 @@ export const postNewMessage: RequestHandler = async (req, res, next) => {
 export const deleteMessage: RequestHandler = async (req, res, next) => {
   const messageId = Number(req.params.messageId);
   const returnTo = typeof req.query.from === 'string' ? req.query.from : '/';
-
-  console.log({ returnTo });
 
   try {
     const message = await deleteMessageById(messageId);

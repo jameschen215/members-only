@@ -63,11 +63,7 @@ export const loginUser: RequestHandler = async (req, res, next) => {
       user: PublicUserType | false | null,
       info: { message?: string } | undefined,
     ) => {
-      if (error) {
-        console.error('Login failed: ', error);
-
-        return next(error);
-      }
+      if (error) return next(error);
 
       // Login failed
       if (!user) {
@@ -82,42 +78,13 @@ export const loginUser: RequestHandler = async (req, res, next) => {
       // Login user manually
       req.logIn(user, (error) => {
         if (error) {
-          console.error('req.logIn error:', error);
-
           return res.status(500).render('login', {
             errors: [{ msg: 'Login failed. Please try again.' }],
             oldInput: req.body,
           });
         }
 
-        console.log('Login successful, user logged in:', user.id);
-        console.log('Session after login:', req.session);
-
-        // Force session save before redirect
-        req.session.save((saveErr) => {
-          if (saveErr) {
-            console.error('Session save error:', saveErr);
-            return next(saveErr);
-          }
-
-          console.log('Session saved successfully, redirecting...');
-
-          // Check if it's actually in the database
-          pool.query(
-            'SELECT * FROM user_sessions ORDER BY expire DESC LIMIT 1',
-            (err, result) => {
-              if (err) {
-                console.error('Database query error:', err);
-              } else {
-                console.log('Latest session in DB:', result.rows[0]);
-              }
-            },
-          );
-
-          res.redirect('/');
-        });
-
-        // res.redirect('/');
+        res.redirect('/');
       });
     },
   )(req, res, next);
