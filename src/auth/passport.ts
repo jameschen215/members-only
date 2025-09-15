@@ -17,12 +17,22 @@ export function configurePassport() {
 
   // Deserialize user from the session
   passport.deserializeUser(async (id, done) => {
+    console.log('=== DESERIALIZE START ===');
+    console.log('Deserializing user ID:', id);
+    console.log('ID type:', typeof id);
+
     try {
-      console.log('Deserializing user ID:', id); // Add this log
       const user = await getUserById(id as number);
-      console.log('Deserialized user:', user ? user.username : 'not found'); // Add this log
+      console.log(
+        'Found user:',
+        user ? `${user.username} (ID: ${user.id})` : 'null',
+      );
+      console.log('=== DESERIALIZE END ===');
+
       done(null, user);
     } catch (error) {
+      console.error('Deserialize error:', error);
+
       done(error);
     }
   });

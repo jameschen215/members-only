@@ -62,12 +62,14 @@ export const loginUser: RequestHandler = async (req, res, next) => {
       user: PublicUserType | false | null,
       info: { message?: string } | undefined,
     ) => {
-      if (error) return next(error);
+      if (error) {
+        console.error('Login failed: ', error);
+
+        return next(error);
+      }
 
       // Login failed
       if (!user) {
-        console.log(`Failed login attempt for: ${req.body.username}`);
-
         return res.status(401).render('login', {
           errors: {
             auth: { msg: info?.message || 'Invalid username or password' },
@@ -79,13 +81,18 @@ export const loginUser: RequestHandler = async (req, res, next) => {
       // Login user manually
       req.logIn(user, (error) => {
         if (error) {
-          console.error('Login error:', error);
+          console.error('req.logIn error:', error);
 
           return res.status(500).render('login', {
             errors: [{ msg: 'Login failed. Please try again.' }],
             oldInput: req.body,
           });
         }
+
+        console.log('Login successful, user logged in:', user.id);
+        console.log('Session after login:', req.session);
+        console.log('req.user after login:', req.user);
+
         res.redirect('/');
       });
     },

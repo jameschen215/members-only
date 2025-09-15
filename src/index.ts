@@ -81,6 +81,26 @@ app.use(
   }),
 );
 
+// debug
+// Add this after session middleware but before routes
+app.use((req, res, next) => {
+  if (req.path.startsWith('/auth/login') && req.method === 'POST') {
+    console.log('=== LOGIN REQUEST ===');
+    console.log('Session before:', req.session);
+    console.log('User before:', req.user);
+  }
+  next();
+});
+
+app.use((req, res, next) => {
+  if (req.path === '/' && req.user) {
+    console.log('=== PROTECTED ROUTE ACCESS ===');
+    console.log('Session:', req.session);
+    console.log('User:', req.user);
+  }
+  next();
+});
+
 // Configure and initialize Passport
 const passport = configurePassport();
 app.use(passport.initialize());
@@ -93,6 +113,17 @@ app.use(currentUser);
 app.use('/', indexRoutes);
 
 app.use('/auth', authRoutes);
+
+// debug test
+app.get('/session-info', (req, res) => {
+  res.json({
+    sessionID: req.sessionID,
+    session: req.session,
+    user: req.user,
+    isAuthenticated: req.isAuthenticated(),
+    cookies: req.headers.cookie,
+  });
+});
 
 // handle other routes with not found
 app.use((_req, _res, _next) => {

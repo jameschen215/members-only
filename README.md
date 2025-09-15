@@ -90,3 +90,5 @@ By default, EJS and other templating engines escape HTML characters to prevent X
 
 I learned about a common event-timing issue where a `blur` event on an input field can fire before a `click` event on another element. To solve this, I can use the `mousedown` event and call `event.preventDefault()` to prevent the blur from happening, allowing the click event to be executed.
 [Code here](/src/public/scripts/explore.js)
+
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
