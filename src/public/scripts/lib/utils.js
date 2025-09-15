@@ -223,7 +223,6 @@ export function handleMessageDeletionDropdown() {
 
     document.querySelectorAll('[id^="dropdown-menu-"]').forEach((dm) => {
       dm.classList.add('hidden');
-      console.log('hided');
     });
   }
 }

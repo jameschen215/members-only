@@ -7,7 +7,7 @@
 
   <!-- display messages -->
   <% messages.map(msg => { %>
-  <%- include('partials/post', { msg }) %>
+  <%- include('partials/post', { user: null, msg }) %>
   <% }) %>
 
   <!-- end of the list -->

@@ -108,7 +108,7 @@
   <% if (locals.messages) { %>
   <section>
     <% messages.map(msg => { %>
-    <%- include('partials/post', { msg }) %>
+    <%- include('partials/post', { user, msg }) %>
     <% }) %>
   </section>
 
