@@ -803,6 +803,16 @@
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
   }
+  .\[overflow-wrap\:anywhere\] {
+    overflow-wrap: anywhere;
+  }
+  .hyphens-auto {
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+  .whitespace-normal {
+    white-space: normal;
+  }
   .text-amber-500 {
     color: var(--color-amber-500);
   }

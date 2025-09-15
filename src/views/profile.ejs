@@ -26,10 +26,17 @@
 
     <div class="flex items-start gap-5">
       <div>
-        <h1 class="text-zinc-800 text-3xl font-semibold">
-          <%= user.first_name %> <%= user.last_name %>
+        <h1
+          class="text-zinc-800 text-3xl font-semibold whitespace-normal [overflow-wrap:anywhere] hyphens-auto"
+        >
+          <%= user.first_name %>
+          <%= user.last_name %>
         </h1>
-        <p class="text-zinc-500"><%= user.username %></p>
+        <p
+          class="text-zinc-500 whitespace-normal [overflow-wrap:anywhere] hyphens-auto"
+        >
+          <%= user.username %>
+        </p>
       </div>
 
       <% if (user.role === 'admin') { %>

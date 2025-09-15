@@ -17,8 +17,11 @@
     <div class="flex items-start gap-5">
       <div>
         <div class="flex items-center gap-2">
-          <h2 class="text-zinc-950 font-semibold">
-            <%- user.first_name %> <%- user.last_name %>
+          <h2
+            class="text-zinc-950 font-semibold whitespace-normal [overflow-wrap:anywhere] hyphens-auto"
+          >
+            <%- user.first_name %>
+            <%- user.last_name %>
           </h2>
 
           <% if (user.role === 'admin') { %>
@@ -43,7 +46,11 @@
 
           <% } %>
         </div>
-        <p class="text-zinc-500 text-sm"><%- user.username %></p>
+        <p
+          class="text-zinc-500 text-sm whitespace-normal [overflow-wrap:anywhere] hyphens-auto"
+        >
+          <%- user.username %>
+        </p>
       </div>
     </div>
   </div>
