@@ -22,6 +22,19 @@ import { errorsHandler } from './errors/errors-handler.js';
 import { currentUser } from './middlewares/current-user.js';
 import { setCurrentPath } from './middlewares/current-path.js';
 import { CustomNotFoundError } from './errors/custom-not-found-error.js';
+import { UserType } from './types/user.js';
+
+// ------------------ debug ------------------
+import 'express-session';
+
+declare module 'express-session' {
+  interface SessionData {
+    passport?: {
+      user: any;
+    };
+  }
+}
+// ------------------ debug ------------------
 
 const app = express();
 const upload = multer(); // handle form data upload from js
@@ -81,7 +94,8 @@ app.use(
   }),
 );
 
-// debug
+// -------------------- debug test --------------------
+
 // Add this after session middleware but before routes
 app.use((req, res, next) => {
   if (req.path.startsWith('/auth/login') && req.method === 'POST') {
@@ -101,6 +115,8 @@ app.use((req, res, next) => {
   next();
 });
 
+// -------------------- debug test --------------------
+
 // Configure and initialize Passport
 const passport = configurePassport();
 app.use(passport.initialize());
@@ -114,7 +130,7 @@ app.use('/', indexRoutes);
 
 app.use('/auth', authRoutes);
 
-// debug test
+// -------------------- debug test --------------------
 app.get('/session-info', (req, res) => {
   res.json({
     sessionID: req.sessionID,
@@ -124,6 +140,49 @@ app.get('/session-info', (req, res) => {
     cookies: req.headers.cookie,
   });
 });
+
+// Add this to see what happens on the redirected request
+app.use((req, res, next) => {
+  if (req.path === '/' || req.path.startsWith('/auth')) {
+    console.log(`=== ${req.method} ${req.path} ===`);
+    console.log('Session ID:', req.sessionID);
+    console.log('Session exists:', !!req.session);
+    console.log('Session passport:', req.session?.passport);
+    console.log(
+      'req.user:',
+      req.user ? `User ID: ${(req.user as UserType).id}` : 'undefined',
+    );
+    console.log('isAuthenticated():', req.isAuthenticated());
+    console.log('Cookies received:', req.headers.cookie);
+    console.log('=================');
+  }
+  next();
+});
+
+// Check if session cookie is being set correctly
+app.use((req, res, next) => {
+  const originalSend = res.send;
+  res.send = function (data: any): typeof res {
+    if (req.path === '/auth/login' && req.method === 'POST') {
+      console.log('=== RESPONSE HEADERS ===');
+      console.log('Set-Cookie:', res.getHeaders()['set-cookie']);
+      console.log('Location:', res.getHeaders().location);
+    }
+    return originalSend.call(this, data);
+  };
+  next();
+});
+
+app.get('/test-auth-status', (req, res) => {
+  res.json({
+    sessionID: req.sessionID,
+    sessionData: req.session,
+    user: req.user,
+    isAuthenticated: req.isAuthenticated(),
+    passport: req.session?.passport,
+  });
+});
+// -------------------- debug test --------------------
 
 // handle other routes with not found
 app.use((_req, _res, _next) => {

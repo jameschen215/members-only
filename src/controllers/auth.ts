@@ -91,9 +91,19 @@ export const loginUser: RequestHandler = async (req, res, next) => {
 
         console.log('Login successful, user logged in:', user.id);
         console.log('Session after login:', req.session);
-        console.log('req.user after login:', req.user);
 
-        res.redirect('/');
+        // Force session save before redirect
+        req.session.save((saveErr) => {
+          if (saveErr) {
+            console.error('Session save error:', saveErr);
+            return next(saveErr);
+          }
+
+          console.log('Session saved successfully, redirecting...');
+          res.redirect('/');
+        });
+
+        // res.redirect('/');
       });
     },
   )(req, res, next);
