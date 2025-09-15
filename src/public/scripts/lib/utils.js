@@ -199,7 +199,9 @@ export function handleMessageDeletionDropdown() {
       const trigger = ev.target.closest('[id^="dropdown-trigger-"]');
       const dropdownMenuId = 'dropdown-menu-' + trigger.id.split('-').at(-1);
 
-      trigger.setAttribute('aria-expanded', true);
+      if (trigger) {
+        trigger.setAttribute('aria-expanded', true);
+      }
       showDropdownById(dropdownMenuId);
     } else if (ev.target.closest('[id^="dropdown-menu-"] form button')) {
       hideAllDropdownMenu();
