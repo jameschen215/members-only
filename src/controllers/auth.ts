@@ -14,6 +14,7 @@ import {
 } from '../models/user.js';
 import { PublicUserType } from '../types/user.js';
 import { getMessagesByUserId } from '../models/message.js';
+import { pool } from '../db/pool.js';
 
 export const getRegisterForm: RequestHandler = (req, res) => {
   res.render('register', { errors: null, originalInput: null });
@@ -100,6 +101,19 @@ export const loginUser: RequestHandler = async (req, res, next) => {
           }
 
           console.log('Session saved successfully, redirecting...');
+
+          // Check if it's actually in the database
+          pool.query(
+            'SELECT * FROM user_sessions ORDER BY expire DESC LIMIT 1',
+            (err, result) => {
+              if (err) {
+                console.error('Database query error:', err);
+              } else {
+                console.log('Latest session in DB:', result.rows[0]);
+              }
+            },
+          );
+
           res.redirect('/');
         });
 

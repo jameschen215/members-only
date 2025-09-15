@@ -182,6 +182,20 @@ app.get('/test-auth-status', (req, res) => {
     passport: req.session?.passport,
   });
 });
+
+app.use((req, res, next) => {
+  console.log('=== REQUEST DETAILS ===');
+  console.log('Path:', req.path);
+  console.log('Session ID:', req.sessionID);
+  console.log('Cookies received:', req.headers.cookie);
+  console.log('Session exists:', !!req.session);
+  console.log(
+    'Session keys:',
+    req.session ? Object.keys(req.session) : 'no session',
+  );
+  console.log('=====================');
+  next();
+});
 // -------------------- debug test --------------------
 
 // handle other routes with not found
