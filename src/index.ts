@@ -112,7 +112,9 @@ async function startServer() {
 
   try {
     // Ensure database is set up before starting the server
-    await runSetup();
+    if (process.env.NODE_ENV !== 'production') {
+      await runSetup();
+    }
 
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
@@ -124,5 +126,5 @@ async function startServer() {
 }
 
 if (process.env.NODE_ENV !== 'production') {
-  startServer();
 }
+startServer();
