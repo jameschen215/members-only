@@ -7,6 +7,7 @@ import {
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('#register-form');
+  let isRegistering = false;
 
   if (!form) return;
 
@@ -19,6 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Client side validation
   form.addEventListener('submit', (ev) => {
     ev.preventDefault(); // always prevent first
+
+    if (isRegistering) return;
+
+    isRegistering = true;
 
     let isValid = true;
 

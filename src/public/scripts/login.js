@@ -7,6 +7,7 @@ import {
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('#login-form');
+  let isLogging = false;
 
   if (!form) return;
 
@@ -19,6 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Client validation
   form.addEventListener('submit', (ev) => {
     ev.preventDefault(); // always prevent first
+
+    if (isLogging) return;
+
+    isLogging = true;
 
     let isValid = true;
 

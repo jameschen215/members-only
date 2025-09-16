@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const formContainer = document.querySelector('#form-container');
   const form = document.querySelector('#create-form');
   const cancelBtn = document.querySelector('#cancel-post-btn');
+  const postBtn = document.querySelector('#submit-post-btn');
+
+  let isPosting = false;
 
   if (postTrigger) {
     postTrigger.addEventListener('click', showModal);
@@ -32,9 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
 
-    const formData = new FormData(form);
+    if (isPosting) return;
 
-    console.log(formData);
+    isPosting = true;
+    postBtn.disabled = true;
+    postBtn.textContent = 'Posting...';
+
+    const formData = new FormData(form);
 
     const res = await fetch('/messages/create', {
       method: 'POST',
