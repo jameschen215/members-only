@@ -76,8 +76,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('nav').setAttribute('inert', '');
     document.querySelector('main').setAttribute('inert', '');
 
-    // prevent modal from being scrolled on mobile
-    document.body.classList.add('overflow-hidden');
+    // prevent scrolling on mobile
+    const scrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.overflow = 'hidden';
+    document.body.dataset.scrollY = scrollY;
 
     modal.classList.remove('hidden');
     modal.classList.add('flex');
@@ -98,7 +104,15 @@ document.addEventListener('DOMContentLoaded', () => {
     formContainer.classList.add('opacity-0', 'scale-95'); // animate out
 
     setTimeout(() => {
-      document.body.classList.remove('overflow-hidden');
+      // enable scrolling on mobile when modal closed
+      const scrollY = document.body.dataset.scrollY;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.overflow = '';
+      window.scrollTo(0, parseInt(scrollY || '0'));
+      delete document.body.dataset.scrollY;
 
       modal.classList.remove('flex');
       modal.classList.add('hidden');
