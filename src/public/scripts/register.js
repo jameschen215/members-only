@@ -50,6 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       focusOnFirstErrorField(form);
     }
+
+    isRegistering = false;
   });
 
   // Remove error info when when user is typing

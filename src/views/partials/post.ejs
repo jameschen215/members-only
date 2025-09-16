@@ -26,24 +26,32 @@
         aria-label="View <%= msg.author.first_name %>'s profile"
       >
         <p
-          class="font-semibold shrink-0 whitespace-normal [overflow-wrap:anywhere] hyphens-auto"
+          class="font-semibold max-w-40 shrink-0 line-clamp-1 whitespace-nowrap [overflow-wrap:anywhere] hyphens-auto"
         >
           <%= msg.author.first_name %>
           <%= msg.author.last_name %>
         </p>
 
         <% if (msg.author.role === 'moderator') { %>
-        <div class="size-5 text-sky-500" role="img" aria-label="Club member">
+        <div
+          class="size-5 text-sky-500 shrink-0"
+          role="img"
+          aria-label="Club member"
+        >
           <%- include('./icons/member') %>
         </div>
         <% } else if (msg.author.role === 'admin') { %>
-        <div class="size-5 text-amber-500" role="img" aria-label="Admin user">
+        <div
+          class="size-5 text-amber-500 shrink-0"
+          role="img"
+          aria-label="Admin user"
+        >
           <%- include('./icons/admin') %>
         </div>
         <% } %>
 
         <p
-          class="text-zinc-500 line-clamp-1 whitespace-normal [overflow-wrap:anywhere] hyphens-auto"
+          class="text-zinc-500 whitespace-normal [overflow-wrap:anywhere] hyphens-auto line-clamp-1"
         >
           <%= msg.author.username %>
           <span class="text-zinc-500" aria-hidden="true">&#8901;</span>
@@ -106,3 +114,4 @@
     </div>
   </div>
 </div>
+<!-- w-full flex items-center gap-1 font-semibold whitespace-normal [overflow-wrap:anywhere] hyphens-auto -->

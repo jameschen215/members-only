@@ -24,7 +24,8 @@
       <%= user.avatar %>
     </div>
 
-    <div class="flex items-start gap-5">
+    <div class="flex flex-col items-start gap-3">
+      <!-- Names -->
       <div>
         <h1
           class="text-zinc-800 text-3xl font-semibold whitespace-normal [overflow-wrap:anywhere] hyphens-auto"
@@ -42,7 +43,7 @@
       <% if (user.role === 'admin') { %>
       <!-- Admin icon -->
       <div
-        class="flex items-center gap-1 border border-amber-200 hover:bg-amber-50 rounded-full px-2 py-1 mt-1"
+        class="flex items-center gap-1 border border-amber-200 hover:bg-amber-50 rounded-full px-2 py-1"
       >
         <span
           class="block size-5 text-amber-500"
@@ -58,7 +59,7 @@
 
       <!-- Club member icon -->
       <div
-        class="flex items-center gap-1 border border-sky-200 rounded-full px-2 py-1 hover:bg-sky-50 mt-1"
+        class="flex items-center gap-1 border border-sky-200 rounded-full px-2 py-1 hover:bg-sky-50"
       >
         <span
           class="block size-5 text-sky-500"
@@ -74,7 +75,7 @@
       <!-- User icon -->
       <a
         href="/auth/upgrade"
-        class="mt-1 flex items-center gap-1 border border-zinc-100 rounded-full px-2 py-1 hover:bg-zinc-100 transition-colors duration-200"
+        class="flex items-center gap-1 border border-zinc-200 rounded-full px-2 py-1 hover:bg-zinc-100 transition-colors duration-200"
       >
         <span
           class="inline-block size-5 text-sky-500"
@@ -87,14 +88,14 @@
         <span class="text-sm">Join the club</span>
       </a>
       <% } %>
-    </div>
 
-    <!-- join date and number of messages -->
-    <div
-      class="flex flex-col sm:flex-row sm:items-baseline sm:gap-4 text-zinc-600 font-light"
-    >
-      <p>Joined in <%= locals.formatDate(user.created_at, 'LLLL yyyy') %></p>
-      <p>
+      <!-- Created at -->
+      <p class="text-zinc-500 text-base">
+        Joined in <%= locals.formatDate(user.created_at, 'LLLL yyyy') %>
+      </p>
+
+      <!-- Count of messages -->
+      <p class="text-zinc-500 -mt-2 text-base">
         You've posted
         <span class="text-zinc-900 font-semibold">
           <%= locals.messages.length %>

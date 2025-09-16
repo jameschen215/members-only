@@ -44,6 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       focusOnFirstErrorField(form);
     }
+
+    isLogging = false;
   });
 
   // Remove error info when user typing

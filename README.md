@@ -218,8 +218,3 @@ app.use(
 6. **Use environment-specific configurations** while maintaining security standards
 
 This issue highlighted the importance of understanding deployment platform architecture and the need for environment-specific configuration when building production-ready applications.
-
-TODO:
-
-- Disable post button when user is submitting their post
-- fix create modal scroll issue on mobile
