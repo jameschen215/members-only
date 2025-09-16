@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // when clicking on nav link, close sidebar
     else if (ev.target.closest('nav li')) {
       hideSidebar();
+    } else if (ev.target.closest('#post-trigger')) {
+      hideSidebar();
     }
   });
 

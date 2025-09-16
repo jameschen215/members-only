@@ -76,6 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('nav').setAttribute('inert', '');
     document.querySelector('main').setAttribute('inert', '');
 
+    // prevent modal from being scrolled on mobile
+    document.body.classList.add('overflow-hidden');
+
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     requestAnimationFrame(() => {
@@ -95,6 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
     formContainer.classList.add('opacity-0', 'scale-95'); // animate out
 
     setTimeout(() => {
+      document.body.classList.remove('overflow-hidden');
+
       modal.classList.remove('flex');
       modal.classList.add('hidden');
 
